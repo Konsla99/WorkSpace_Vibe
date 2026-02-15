@@ -1,15 +1,15 @@
 directories:
   output: dist
   buildResources: build
-appId: com.gemini.cli.gui
-productName: Gemini CLI GUI
+appId: com.resume.gem
+productName: Resume_Gem
 win:
   target: nsis
   icon: ./APP_icon.ico
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
-  shortcutName: Gemini Career Assistant
+  shortcutName: Resume_Gem
 asar: true
 asarUnpack:
   - '**/node_modules/node-pty/**/*'

@@ -1,5 +1,5 @@
 {
-  "name": "gemini-cli-gui",
+  "name": "resume-gem",
   "version": "1.0.0",
   "description": "Electron app to control gemini CLI",
   "main": "main.js",
@@ -21,8 +21,8 @@
     "xterm-addon-fit": "^0.8.0"
   },
   "build": {
-    "appId": "com.gemini.cli.gui",
-    "productName": "Gemini CLI GUI",
+    "appId": "com.resume.gem",
+    "productName": "Resume_Gem",
     "win": {
       "target": "nsis",
       "icon": "./APP_icon.ico"
@@ -30,7 +30,7 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "shortcutName": "Gemini Career Assistant"
+      "shortcutName": "Resume_Gem"
     },
     "directories": {
       "output": "dist"
