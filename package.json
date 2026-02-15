@@ -1,0 +1,48 @@
+{
+  "name": "gemini-cli-gui",
+  "version": "1.0.0",
+  "description": "Electron app to control gemini CLI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "node-pty": "^1.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  },
+  "build": {
+    "appId": "com.gemini.cli.gui",
+    "productName": "Gemini CLI GUI",
+    "win": {
+      "target": "nsis",
+      "icon": "./APP_icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "**/node_modules/node-pty/**/*"
+    ],
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "design.html",
+      "package.json",
+      "기능.txt",
+      "설정 방법.md",
+      "node_modules/**/*"
+    ]
+  }
+}

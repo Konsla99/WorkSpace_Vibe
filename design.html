@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Career Assistant - Prototype</title>
+    <link rel="stylesheet" href="node_modules/xterm/css/xterm.css" />
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --sidebar-color: #252526;
+            --accent-color: #007acc;
+            --text-color: #cccccc;
+            --terminal-bg: #000000;
+        }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: var(--bg-color); color: var(--text-color); overflow: hidden; }
+        .container { display: flex; height: 100vh; }
+
+        /* Sidebar */
+        .sidebar { width: 280px; background: var(--sidebar-color); border-right: 1px solid #333; display: flex; flex-direction: column; padding: 20px; gap: 12px; }
+        h3 { margin-bottom: 20px; color: white; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        .section-title { font-size: 0.75rem; color: #666; margin-top: 15px; text-transform: uppercase; }
+        button { background: #333; color: white; border: 1px solid #444; padding: 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; text-align: left; }
+        button:hover { background: var(--accent-color); border-color: var(--accent-color); }
+        .primary-btn { background: var(--accent-color); text-align: center; font-weight: bold; }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; background: var(--terminal-bg); position: relative; }
+        #placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #555; }
+        
+        /* Terminal */
+        #terminal-wrapper { display: none; height: 100%; flex-direction: column; }
+        .terminal-header { background: #2d2d2d; padding: 8px 15px; font-size: 0.8rem; display: flex; justify-content: space-between; border-bottom: 1px solid #444; }
+        #terminal-body { flex: 1; padding: 15px; font-family: 'Consolas', monospace; color: #00ff00; overflow-y: auto; white-space: pre-wrap; font-size: 14px; }
+        .cursor { display: inline-block; width: 8px; height: 18px; background: #00ff00; vertical-align: middle; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .cmd-in { color: white; }
+        .path { color: #569cd6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="sidebar">
+        <h3 style="margin-bottom: 20px; border-bottom: 1px solid #444; padding-bottom: 10px;">취업준비도우미 - Konsla99</h3>
+        
+        <div id="status-container" style="background: #1a1a1a; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #444;">
+            <div style="font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">System Status</div>
+            <div id="app-status" style="font-size: 0.85rem; color: #007acc; font-weight: bold;">대기 중...</div>
+        </div>
+
+        <div class="section-title">Setup</div>
+        <button class="primary-btn" id="select-ws-btn">📁 워크스페이스 지정</button>
+        <div id="path-text" style="font-size: 0.7rem; color: #888; overflow: hidden; text-overflow: ellipsis; margin-top: 5px;">경로 미지정</div>
+
+        <div class="section-title">Gemini Control</div>
+        <button id="apply-instruction-btn" style="background: #e65100; border-color: #bf360c; width: 100%; text-align: center; padding: 12px;">App 설정 알리기 (지침 적용)</button>
+        
+        <div class="section-title">Features</div>
+        <button data-command="1">1. 직무 분석</button>
+        <button data-command="2">2. 자소서 초안</button>
+        <button data-command="3">3. 첨삭 피드백</button>
+        <button data-command="4">4. 면접 질문 도출</button>
+        <button data-command="5">5. AI 표현 다듬기</button>
+
+        <div style="flex: 1;"></div>
+        <button id="show-guide-btn" style="font-size: 0.8rem; opacity: 0.7;">❓ 설정 방법 보기</button>
+    </nav>
+
+    <main class="main-content">
+        <div id="placeholder">
+            <div style="font-size: 40px; margin-bottom: 10px;">📂</div>
+            <p>워크스페이스를 지정해 주세요.</p>
+        </div>
+
+        <div id="terminal-wrapper">
+            <div class="terminal-header">
+                <span>PowerShell - Gemini Core</span>
+                <span id="status-tag" style="color: #00ff00;">● ONLINE</span>
+            </div>
+            <div id="terminal-body"></div>
+        </div>
+    </main>
+</div>
+
+<script src="node_modules/xterm/lib/xterm.js"></script>
+<script src="node_modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+<script src="renderer.js"></script>
+</body>
+</html>
