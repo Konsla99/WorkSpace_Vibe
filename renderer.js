@@ -93,14 +93,22 @@ function setupSidebarButtonListeners() {
     }
 
     if (applyInstructionBtn) {
-        applyInstructionBtn.addEventListener('click', () => {
+        applyInstructionBtn.addEventListener('click', (e) => {
             if (terminalWrapper.style.display === 'none') {
                 alert("먼저 워크스페이스를 지정하세요!");
                 return;
             }
-            // 프로세스 종료 없이 명령어만 전달
-            // \r\n 대신 \r 만 사용하여 엔터 트리거 시도
-            window.electronAPI.sendCommandToTerminal("Get-Content 지침.md | gemini\r");
+            // 포커스 해제 및 터미널 포커스
+            applyInstructionBtn.blur();
+            if (term) term.focus();
+
+            // 명령어 텍스트만 전송
+            window.electronAPI.sendCommandToTerminal("Get-Content 지침.md | gemini");
+            
+            // 약간의 딜레이 후 진짜 엔터 신호 주입
+            setTimeout(() => {
+                window.electronAPI.triggerHardwareEnter();
+            }, 100);
         });
     }
 
@@ -112,9 +120,17 @@ function setupSidebarButtonListeners() {
                 alert("먼저 워크스페이스를 지정하세요!");
                 return;
             }
+            button.blur();
+            if (term) term.focus();
+
             const command = button.dataset.command;
-            // 확실한 실행을 위해 \r 사용
-            window.electronAPI.sendCommandToTerminal(command + "\r");
+            // 숫자/명령어 전송
+            window.electronAPI.sendCommandToTerminal(command);
+            
+            // 진짜 엔터 신호 주입
+            setTimeout(() => {
+                window.electronAPI.triggerHardwareEnter();
+            }, 100);
         });
     });
 

@@ -91,13 +91,13 @@ ipcMain.on('init-terminal', (event) => {
     // Initial commands - Give a small delay to ensure shell is ready
     setTimeout(() => {
         if (currentWorkspace) {
-            ptyProcess.write(`cd "${currentWorkspace}"\r`);
+            ptyProcess.write(`cd "${currentWorkspace}"\r\n`);
             
             setTimeout(() => {
-                ptyProcess.write(`gemini\r`);
+                ptyProcess.write(`gemini\r\n`);
             }, 1000);
         } else {
-            ptyProcess.write(`gemini\r`);
+            ptyProcess.write(`gemini\r\n`);
         }
     }, 2000);
 });
@@ -122,6 +122,14 @@ ipcMain.on('send-command-to-terminal', (event, command) => {
     if (ptyProcess) {
         ptyProcess.write(command); 
     }
+});
+
+ipcMain.on('trigger-hardware-enter', () => {
+    const { exec } = require('child_process');
+    // design.html의 <title>과 일치해야 함. ~는 SendKeys에서 Enter를 의미함.
+    const windowTitle = 'Gemini Career Assistant - Prototype';
+    const powershellCmd = `powershell -NoProfile -Command "$wshell = New-Object -ComObject WScript.Shell; if($wshell.AppActivate('${windowTitle}')) { Start-Sleep -m 50; $wshell.SendKeys('~') }"`;
+    exec(powershellCmd);
 });
 
 ipcMain.handle('read-instruction', async (event, workspacePath) => {

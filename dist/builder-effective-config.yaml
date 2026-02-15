@@ -1,0 +1,22 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.gemini.cli.gui
+productName: Gemini CLI GUI
+win:
+  target: nsis
+  icon: ./APP_icon.ico
+asar: true
+asarUnpack:
+  - '**/node_modules/node-pty/**/*'
+files:
+  - filter:
+      - main.js
+      - preload.js
+      - renderer.js
+      - design.html
+      - package.json
+      - 기능.txt
+      - 설정 방법.md
+      - node_modules/**/*
+electronVersion: 28.3.3
