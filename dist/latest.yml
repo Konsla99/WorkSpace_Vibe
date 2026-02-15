@@ -1,0 +1,8 @@
+version: 1.0.0
+files:
+  - url: Gemini-CLI-GUI-Setup-1.0.0.exe
+    sha512: yTfGPtM4W/WvC54R/TMGBkgqbqgXRAA4lb+4VkPL6gpKrqOZxk2ZSwlvHXgfMnNdcsR/YmZG9Tsf4i6H4IurgQ==
+    size: 80244049
+path: Gemini-CLI-GUI-Setup-1.0.0.exe
+sha512: yTfGPtM4W/WvC54R/TMGBkgqbqgXRAA4lb+4VkPL6gpKrqOZxk2ZSwlvHXgfMnNdcsR/YmZG9Tsf4i6H4IurgQ==
+releaseDate: '2026-02-15T08:57:44.166Z'
