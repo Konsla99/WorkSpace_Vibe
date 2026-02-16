@@ -5,7 +5,7 @@ appId: com.resume.gem
 productName: Resume_Gem
 win:
   target: nsis
-  icon: ./APP_icon.ico
+  icon: assets/APP_icon.ico
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
@@ -15,12 +15,9 @@ asarUnpack:
   - '**/node_modules/node-pty/**/*'
 files:
   - filter:
-      - main.js
-      - preload.js
-      - renderer.js
-      - design.html
+      - src/**/*
+      - assets/**/*
+      - docs/**/*
       - package.json
-      - 기능.txt
-      - 설정 방법.md
       - node_modules/**/*
 electronVersion: 28.3.3

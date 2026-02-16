@@ -23,10 +23,10 @@ function createWindow() {
         },
     });
 
-    mainWindow.loadFile('design.html');
+    mainWindow.loadFile(path.join(__dirname, 'design.html'));
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', () => {
         mainWindow = null;
