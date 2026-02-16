@@ -62,7 +62,7 @@ ipcMain.handle('select-folder', async () => {
         // 지침.md 자동 생성 및 갱신 로직 (배포 환경 대응)
         try {
             const targetPath = path.join(currentWorkspace, '지침.md');
-            const sourcePath = path.join(app.getAppPath(), 'docs', '기능.md.txt');
+            const sourcePath = path.join(app.getAppPath(), 'docs', '지침.md');
             
             if (fs.existsSync(sourcePath)) {
                 // 항상 최신 지침으로 덮어쓰기
