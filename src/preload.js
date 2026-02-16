@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     resizeTerminal: (cols, rows) => ipcRenderer.send('resize-terminal', cols, rows),
     getInitialWorkspace: () => ipcRenderer.invoke('get-initial-workspace'),
     sendCommandToTerminal: (command) => ipcRenderer.send('send-command-to-terminal', command),
+    saveFileDialog: (defaultName) => ipcRenderer.invoke('save-file-dialog', defaultName),
+    writeResultFile: (filePath, content) => ipcRenderer.invoke('write-result-file', filePath, content),
     triggerHardwareEnter: () => ipcRenderer.send('trigger-hardware-enter'),
     onTerminalExit: (callback) => ipcRenderer.on('terminal-exit', callback),
     readInstruction: (workspacePath) => ipcRenderer.invoke('read-instruction', workspacePath),

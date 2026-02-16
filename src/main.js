@@ -92,6 +92,24 @@ ipcMain.handle('select-file', async () => {
     return null;
 });
 
+ipcMain.handle('save-file-dialog', async (event, defaultName) => {
+    const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
+        defaultPath: defaultName,
+        filters: [{ name: 'Markdown', extensions: ['md'] }]
+    });
+    return canceled ? null : filePath;
+});
+
+ipcMain.handle('write-result-file', async (event, filePath, content) => {
+    try {
+        fs.writeFileSync(filePath, content, 'utf8');
+        return true;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+});
+
 ipcMain.on('init-terminal', (event) => {
     if (ptyProcess) {
         ptyProcess.kill();
