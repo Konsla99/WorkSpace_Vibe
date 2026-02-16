@@ -22,6 +22,13 @@ function updateStatus(text, color = '#007acc') {
     }
 }
 
+function enableAllButtons() {
+    const buttons = document.querySelectorAll('.sidebar button[disabled]');
+    buttons.forEach(btn => {
+        btn.disabled = false;
+    });
+}
+
 function initializeTerminal() {
     term = new Terminal({
         fontFamily: '"Cascadia Code", monospace',
@@ -53,6 +60,7 @@ function initializeTerminal() {
         if (!isReady) {
             isReady = true;
             updateStatus('Gemini 준비 완료', '#00ff00');
+            enableAllButtons();
         }
     });
 
@@ -95,18 +103,14 @@ function setupSidebarButtonListeners() {
 
     if (applyInstructionBtn) {
         applyInstructionBtn.addEventListener('click', (e) => {
+            if (!isReady) return;
             if (terminalWrapper.style.display === 'none') {
                 alert("먼저 워크스페이스를 지정하세요!");
                 return;
             }
-            // 포커스 해제 및 터미널 포커스
             applyInstructionBtn.blur();
             if (term) term.focus();
-
-            // 명령어 텍스트만 전송
             window.electronAPI.sendCommandToTerminal("Get-Content 지침.md | gemini");
-            
-            // 약간의 딜레이 후 진짜 엔터 신호 주입
             setTimeout(() => {
                 window.electronAPI.triggerHardwareEnter();
             }, 100);
@@ -117,18 +121,15 @@ function setupSidebarButtonListeners() {
     const sidebarButtons = document.querySelectorAll('.sidebar button[data-command]');
     sidebarButtons.forEach(button => {
         button.addEventListener('click', () => {
+            if (!isReady) return;
             if (terminalWrapper.style.display === 'none') {
                 alert("먼저 워크스페이스를 지정하세요!");
                 return;
             }
             button.blur();
             if (term) term.focus();
-
             const command = button.dataset.command;
-            // 숫자/명령어 전송
             window.electronAPI.sendCommandToTerminal(command);
-            
-            // 진짜 엔터 신호 주입
             setTimeout(() => {
                 window.electronAPI.triggerHardwareEnter();
             }, 100);
