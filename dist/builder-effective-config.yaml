@@ -12,12 +12,11 @@ nsis:
   shortcutName: Resume_Gem
 asar: true
 asarUnpack:
-  - '**/node_modules/node-pty/**/*'
+  - node_modules/node-pty
 files:
   - filter:
       - src/**/*
       - assets/**/*
       - docs/**/*
       - package.json
-      - node_modules/**/*
 electronVersion: 28.3.3
