@@ -12,10 +12,10 @@ const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        minWidth: 800,
-        minHeight: 600,
+        width: 1300,
+        height: 900,
+        minWidth: 1000,
+        minHeight: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
