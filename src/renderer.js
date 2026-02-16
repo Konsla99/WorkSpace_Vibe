@@ -47,9 +47,10 @@ function initializeTerminal() {
 
     window.electronAPI.onTerminalIncomingData((event, data) => {
         term.write(data);
-        
-        // 상태 감지: 터미널에 글자가 들어오기 시작하면 즉시 '준비 완료'
-        if (!isReady && data.trim().length > 0) {
+    });
+
+    window.electronAPI.onGeminiReady(() => {
+        if (!isReady) {
             isReady = true;
             updateStatus('Gemini 준비 완료', '#00ff00');
         }

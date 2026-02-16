@@ -78,6 +78,12 @@ ipcMain.on('init-terminal', (event) => {
     ptyProcess.onData((data) => {
         if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('terminal-incoming-data', data);
+            
+            // 사용자가 제안한 정규표현식으로 로딩 완료 감지
+            const readyTriggerRegex = /Type\s+your\s+message\s+or\s+@path\/to\/file/i;
+            if (readyTriggerRegex.test(data.toString())) {
+                mainWindow.webContents.send('gemini-ready');
+            }
         }
     });
 

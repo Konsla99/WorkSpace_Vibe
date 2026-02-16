@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     initTerminal: () => ipcRenderer.send('init-terminal'),
     sendTerminalInput: (input) => ipcRenderer.send('terminal-input', input),
     onTerminalIncomingData: (callback) => ipcRenderer.on('terminal-incoming-data', callback),
+    onGeminiReady: (callback) => ipcRenderer.on('gemini-ready', callback),
     resizeTerminal: (cols, rows) => ipcRenderer.send('resize-terminal', cols, rows),
     getInitialWorkspace: () => ipcRenderer.invoke('get-initial-workspace'),
     sendCommandToTerminal: (command) => ipcRenderer.send('send-command-to-terminal', command),
