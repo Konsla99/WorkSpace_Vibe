@@ -61,62 +61,68 @@
         <div class="section-title">Gemini Control</div>
         <button id="apply-instruction-btn" style="background: #e65100; border-color: #bf360c; width: 100%; text-align: center; padding: 12px;" disabled>App 설정 알리기 (지침 적용)</button>
         
-        <div class="section-title">Features</div>
-        
-        <!-- 1. 직무 분석 -->
-        <div class="feature-group" style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-            <div style="font-size: 0.85rem; margin-bottom: 5px; color: #aaa;">1. 직무 분석</div>
-            <button id="f1-jd-btn" style="width: 100%; margin-bottom: 5px;" disabled>JD 선택</button>
-            <button id="f1-run-btn" style="width: 100%; background: #007acc;" disabled>분석 실행</button>
-        </div>
-
-        <!-- 2. 자소서 초안 -->
-        <div class="feature-group" style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-            <div style="font-size: 0.85rem; margin-bottom: 5px; color: #aaa;">2. 자소서 초안</div>
-            <input type="text" id="f2-item-input" placeholder="자소서 항목 입력" style="width: 90%; background: #1e1e1e; color: white; border: 1px solid #444; padding: 5px; margin-bottom: 5px; border-radius: 4px;">
-            <button id="f2-exp-btn" style="width: 100%; margin-bottom: 5px;" disabled>경험 기술서 선택</button>
-            <button id="f2-run-btn" style="width: 100%; background: #007acc;" disabled>초안 작성</button>
-        </div>
-
-        <!-- 3. 첨삭 피드백 -->
-        <div class="feature-group" style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-            <div style="font-size: 0.85rem; margin-bottom: 5px; color: #aaa;">3. 첨삭 피드백</div>
-            <button id="f3-resume-btn" style="width: 100%; margin-bottom: 5px;" disabled>자소서 선택</button>
-            <button id="f3-jd-btn" style="width: 100%; margin-bottom: 5px;" disabled>JD 선택</button>
-            <button id="f3-run-btn" style="width: 100%; background: #007acc;" disabled>첨삭 진행</button>
-        </div>
-
-        <!-- 4. 면접 질문 -->
-        <div class="feature-group" style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-            <div style="font-size: 0.85rem; margin-bottom: 5px; color: #aaa;">4. 면접 질문 도출</div>
-            <button id="f4-resume-btn" style="width: 100%; margin-bottom: 5px;" disabled>자소서 선택</button>
-            <button id="f4-jd-btn" style="width: 100%; margin-bottom: 5px;" disabled>JD 선택</button>
-            <button id="f4-run-btn" style="width: 100%; background: #007acc;" disabled>질문 생성</button>
-        </div>
-
-        <!-- 5. 표현 다듬기 -->
-        <div class="feature-group" style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-            <div style="font-size: 0.85rem; margin-bottom: 5px; color: #aaa;">5. AI 표현 다듬기</div>
-            <button id="f5-resume-btn" style="width: 100%; margin-bottom: 5px;" disabled>자소서 선택</button>
-            <button id="f5-run-btn" style="width: 100%; background: #007acc;" disabled>윤문 실행</button>
+        <div class="section-title">File Selection</div>
+        <div style="background: #2d2d2d; padding: 10px; border-radius: 4px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px;">
+            <button id="select-jd-btn" style="width: 100%;" disabled>📄 JD 선택</button>
+            <div id="jd-name" style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">선택된 JD 없음</div>
+            
+            <button id="select-resume-btn" style="width: 100%;" disabled>📝 자소서 선택</button>
+            <div id="resume-name" style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">선택된 자소서 없음</div>
+            
+            <button id="select-exp-btn" style="width: 100%;" disabled>💡 경험 기술서 선택</button>
+            <div id="exp-name" style="font-size: 0.7rem; color: #888;">선택된 경험 기술서 없음</div>
         </div>
 
         <div style="flex: 1;"></div>
-        <button id="show-guide-btn" style="font-size: 0.8rem; opacity: 0.7;">❓ 설정 방법 보기</button>
+        <button id="show-guide-btn" style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">❓ 설정 방법 보기</button>
     </nav>
 
     <main class="main-content">
-        <div id="placeholder">
-            <div style="font-size: 40px; margin-bottom: 10px;">📂</div>
-            <p>워크스페이스를 지정해 주세요.</p>
+        <!-- 상단 컨텐츠 영역 (터미널 또는 플레이스홀더) -->
+        <div id="main-view-container" style="flex: 1; position: relative; display: flex; flex-direction: column;">
+            <div id="placeholder">
+                <div style="font-size: 40px; margin-bottom: 10px;">📂</div>
+                <p>워크스페이스를 지정해 주세요.</p>
+            </div>
+
+            <div id="terminal-wrapper" style="flex: 1; display: none; flex-direction: column;">
+                <div class="terminal-header">
+                    <span>PowerShell - Gemini Core</span>
+                    <span id="status-tag" style="color: #00ff00;">● ONLINE</span>
+                </div>
+                <div id="terminal-body" style="flex: 1;"></div>
+            </div>
         </div>
 
-        <div id="terminal-wrapper">
-            <div class="terminal-header">
-                <span>PowerShell - Gemini Core</span>
-                <span id="status-tag" style="color: #00ff00;">● ONLINE</span>
+        <!-- 하단 기능 바 (항상 최하단에 위치) -->
+        <div id="features-footer" style="background: #252526; padding: 15px; border-top: 1px solid #444; display: flex; gap: 15px; align-items: flex-end;">
+            <div class="footer-group" style="flex: 1;">
+                <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">1. 직무 분석</div>
+                <button id="run-analysis-btn" style="background: #007acc; width: 100%;" disabled>분석 실행</button>
             </div>
-            <div id="terminal-body"></div>
+            
+            <div class="footer-group" style="flex: 2;">
+                <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">2. 자소서 초안</div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="draft-item-input" placeholder="항목 입력" style="flex: 1; background: #1e1e1e; color: white; border: 1px solid #444; padding: 8px; border-radius: 4px; font-size: 0.8rem;" disabled>
+                    <button id="run-draft-btn" style="background: #007acc;" disabled>작성</button>
+                </div>
+            </div>
+            
+            <div class="footer-group" style="flex: 1;">
+                <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">3. 첨삭 피드백</div>
+                <button id="run-feedback-btn" style="background: #007acc; width: 100%;" disabled>실행</button>
+            </div>
+            
+            <div class="footer-group" style="flex: 1;">
+                <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">4. 면접 질문</div>
+                <button id="run-interview-btn" style="background: #007acc; width: 100%;" disabled>도출</button>
+            </div>
+            
+            <div class="footer-group" style="flex: 1;">
+                <div style="font-size: 0.7rem; color: #888; margin-bottom: 5px;">5. AI 표현 다듬기</div>
+                <button id="run-humanize-btn" style="background: #007acc; width: 100%;" disabled>실행</button>
+            </div>
         </div>
     </main>
 </div>
