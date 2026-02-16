@@ -23,6 +23,7 @@ function createWindow() {
         },
     });
 
+    // design.html 로드 경로도 __dirname 기준 절대 경로로 명시
     mainWindow.loadFile(path.join(__dirname, 'design.html'));
 
     // Open the DevTools.
@@ -58,23 +59,35 @@ ipcMain.handle('select-folder', async () => {
     if (!canceled && filePaths.length > 0) {
         currentWorkspace = filePaths[0];
         
-        // 지침.md 자동 생성 로직 (배포 환경 대응)
+        // 지침.md 자동 생성 및 갱신 로직 (배포 환경 대응)
         try {
             const targetPath = path.join(currentWorkspace, '지침.md');
             const sourcePath = path.join(app.getAppPath(), 'docs', '기능.md.txt');
             
             if (fs.existsSync(sourcePath)) {
-                if (!fs.existsSync(targetPath)) {
-                    // ASAR 내부 파일 복사를 위해 스트림 대신 직접 읽기/쓰기 사용
-                    const content = fs.readFileSync(sourcePath, 'utf8');
-                    fs.writeFileSync(targetPath, content, 'utf8');
-                }
+                // 항상 최신 지침으로 덮어쓰기
+                const content = fs.readFileSync(sourcePath, 'utf8');
+                fs.writeFileSync(targetPath, content, 'utf8');
             }
         } catch (err) {
             console.error("지침 파일 복사 실패:", err);
         }
 
         return currentWorkspace;
+    }
+    return null;
+});
+
+ipcMain.handle('select-file', async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        filters: [
+            { name: 'Documents', extensions: ['txt', 'md', 'pdf', 'docx'] },
+            { name: 'All Files', extensions: ['*'] }
+        ]
+    });
+    if (!canceled && filePaths.length > 0) {
+        return filePaths[0];
     }
     return null;
 });
@@ -149,9 +162,9 @@ ipcMain.on('send-command-to-terminal', (event, command) => {
 
 ipcMain.on('trigger-hardware-enter', () => {
     const { exec } = require('child_process');
-    // design.html의 <title>과 일치해야 함
     const windowTitle = 'Resume_Gem';
-    const powershellCmd = `powershell -NoProfile -Command "$wshell = New-Object -ComObject WScript.Shell; if($wshell.AppActivate('${windowTitle}')) { Start-Sleep -m 50; $wshell.SendKeys('~') }"`;
+    // 확실한 입력을 위해 엔터(~)를 두 번 보냄 (Start-Sleep 활용)
+    const powershellCmd = `powershell -NoProfile -Command "$wshell = New-Object -ComObject WScript.Shell; if($wshell.AppActivate('${windowTitle}')) { Start-Sleep -m 100; $wshell.SendKeys('~'); Start-Sleep -m 50; $wshell.SendKeys('~') }"`;
     exec(powershellCmd);
 });
 

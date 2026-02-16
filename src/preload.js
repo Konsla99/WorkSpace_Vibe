@@ -2,6 +2,13 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     selectFolder: () => ipcRenderer.invoke('select-folder'),
+    selectFile: () => ipcRenderer.invoke('select-file'),
+    // Node.js path 모듈 대신 순수 JS로 파일명 추출
+    getBasename: (filePath) => {
+        if (!filePath) return '';
+        const parts = filePath.split(/[\\/]/);
+        return parts.pop();
+    },
     initTerminal: () => ipcRenderer.send('init-terminal'),
     sendTerminalInput: (input) => ipcRenderer.send('terminal-input', input),
     onTerminalIncomingData: (callback) => ipcRenderer.on('terminal-incoming-data', callback),
