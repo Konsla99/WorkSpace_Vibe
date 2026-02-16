@@ -57,6 +57,23 @@ ipcMain.handle('select-folder', async () => {
     });
     if (!canceled && filePaths.length > 0) {
         currentWorkspace = filePaths[0];
+        
+        // 지침.md 자동 생성 로직 (배포 환경 대응)
+        try {
+            const targetPath = path.join(currentWorkspace, '지침.md');
+            const sourcePath = path.join(app.getAppPath(), 'docs', '기능.md.txt');
+            
+            if (fs.existsSync(sourcePath)) {
+                if (!fs.existsSync(targetPath)) {
+                    // ASAR 내부 파일 복사를 위해 스트림 대신 직접 읽기/쓰기 사용
+                    const content = fs.readFileSync(sourcePath, 'utf8');
+                    fs.writeFileSync(targetPath, content, 'utf8');
+                }
+            }
+        } catch (err) {
+            console.error("지침 파일 복사 실패:", err);
+        }
+
         return currentWorkspace;
     }
     return null;
@@ -152,7 +169,7 @@ ipcMain.handle('read-instruction', async (event, workspacePath) => {
 });
 
 ipcMain.on('show-setup-guide', () => {
-    const guidePath = path.join(__dirname, '..', 'docs', '설정 방법.md');
+    const guidePath = path.join(app.getAppPath(), 'docs', '설정 방법.md');
     if (fs.existsSync(guidePath)) {
         electronShell.openPath(guidePath);
     } else {
