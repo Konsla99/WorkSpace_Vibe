@@ -1,6 +1,6 @@
-// Elements (will be assigned in setupSidebarButtonListeners)
+// Elements
 let workspaceSelectScreen, terminalWrapper, terminalBody, selectWorkspaceBtn, sidebar, pathTextElement, applyInstructionBtn, showGuideBtn, appStatus;
-let targetJobInput, saveResultBtn;
+let targetJobInput, editJobBtn, saveResultBtn;
 let btnJD, btnResume, btnExp, textJD, textResume, textExp;
 let btnRunAnalysis, btnRunDraft, inputDraftItem, btnRunFeedback, btnRunInterview, btnRunHumanize;
 
@@ -11,15 +11,11 @@ let currentWorkspacePath = null;
 let isReady = false;
 
 // Shared File Paths State
-let sharedFiles = {
-    jd: null,
-    resume: null,
-    exp: null
-};
+let sharedFiles = { jd: null, resume: null, exp: null };
 
 // Result Saving State
-let lastOutputBuffer = ""; // 터미널의 실시간 출력을 담을 버퍼
-let isCollecting = false; // 현재 명령어 실행 중인지 여부
+let startLineIndex = 0; // 명령어 시작 시점의 터미널 라인 번호
+let lastActionName = "Result";
 
 function updateStatus(text, color = '#007acc') {
     if (appStatus) {
@@ -32,11 +28,10 @@ function enableInstructionButton() {
     if (applyInstructionBtn) applyInstructionBtn.disabled = false;
 }
 
-function enableFeatureButtons() {
-    // 모든 파일 선택 버튼 및 기능 버튼 활성화
-    const interactables = document.querySelectorAll('.sidebar button:not(#select-ws-btn):not(#show-guide-btn):not(#apply-instruction-btn), .sidebar input, #features-footer button, #features-footer input');
+function enableFeatureButtons(enabled = true) {
+    const interactables = document.querySelectorAll('#features-footer button, #features-footer input, #select-jd-btn, #select-resume-btn, #select-exp-btn');
     interactables.forEach(el => {
-        el.disabled = false;
+        el.disabled = !enabled;
     });
 }
 
@@ -57,7 +52,9 @@ function initializeTerminal() {
     fitAddon = new FitAddon.FitAddon();
     term.loadAddon(fitAddon);
     term.open(terminalBody);
-    fitAddon.fit();
+    
+    // 초기 크기 맞춤
+    setTimeout(() => fitAddon.fit(), 100);
 
     term.onData(data => {
         window.electronAPI.sendTerminalInput(data);
@@ -65,24 +62,19 @@ function initializeTerminal() {
 
     window.electronAPI.onTerminalIncomingData((event, data) => {
         term.write(data);
-        
-        // 데이터 수집 중이라면 버퍼에 추가 (특수문자 및 제어문자 제거 필터링 필요할 수 있음)
-        if (isCollecting) {
-            lastOutputBuffer += data;
-        }
     });
 
     window.electronAPI.onGeminiReady(() => {
-        // 로딩 완료 트리거 수신
-        if (isCollecting) {
-            isCollecting = false; // 수집 종료
-            if (saveResultBtn) saveResultBtn.disabled = false; // 저장 버튼 활성화
-        }
-
         if (!isReady) {
             isReady = true;
             updateStatus('Gemini 준비 완료', '#00ff00');
             enableInstructionButton();
+        } else {
+            // 답변 완료 시 (명령어 실행 중이었다면)
+            if (saveResultBtn.disabled) {
+                saveResultBtn.disabled = false;
+                updateStatus('분석 완료 (결과 저장 가능)', '#00ff00');
+            }
         }
     });
 
@@ -92,10 +84,14 @@ function initializeTerminal() {
         isReady = false;
     });
 
-    window.addEventListener('resize', () => {
-        fitAddon.fit();
-        window.electronAPI.resizeTerminal(term.cols, term.rows);
+    // 리사이즈 로직 개선 (깨짐 방지)
+    const resizeObserver = new ResizeObserver(() => {
+        if (terminalWrapper.style.display !== 'none') {
+            fitAddon.fit();
+            window.electronAPI.resizeTerminal(term.cols, term.rows);
+        }
     });
+    resizeObserver.observe(terminalBody);
 
     window.electronAPI.initTerminal();
 }
@@ -111,7 +107,6 @@ async function handleWorkspaceSelection() {
         sidebar.style.display = 'flex';
         updateStatus('호출 중...', '#ffca28');
         isReady = false;
-        
         selectWorkspaceBtn.disabled = true;
         initializeTerminal();
     } else {
@@ -119,14 +114,34 @@ async function handleWorkspaceSelection() {
     }
 }
 
-function startCollectingOutput() {
-    lastOutputBuffer = ""; // 버퍼 초기화
-    isCollecting = true;   // 수집 시작
-    if (saveResultBtn) saveResultBtn.disabled = true; // 실행 중엔 저장 방지
+// 터미널 버퍼에서 순수 텍스트 추출 (핵심!)
+function getTerminalResponse() {
+    const buffer = term.buffer.active;
+    let responseText = "";
+    // 명령어가 시작된 라인부터 현재 마지막 라인까지 읽음
+    for (let i = startLineIndex; i < buffer.length; i++) {
+        const line = buffer.getLine(i);
+        if (line) {
+            responseText += line.translateToString().trimEnd() + "\n";
+        }
+    }
+    
+    // 터미널 찌꺼기 필터링 (한 번 더)
+    return responseText
+        .replace(/Type\s+your\s+message.*/gi, "")
+        .replace(/~\/workspace.*\/model/gi, "")
+        .trim();
+}
+
+function startAction(actionName) {
+    // 현재 터미널의 마지막 라인 위치 저장
+    startLineIndex = term.buffer.active.baseY + term.buffer.active.cursorY;
+    lastActionName = actionName;
+    saveResultBtn.disabled = true;
+    updateStatus('Gemini 분석 중...', '#ffca28');
 }
 
 function setupSidebarButtonListeners() {
-    // DOM 요소 할당
     workspaceSelectScreen = document.getElementById('placeholder');
     terminalWrapper = document.getElementById('terminal-wrapper');
     terminalBody = document.getElementById('terminal-body');
@@ -137,9 +152,9 @@ function setupSidebarButtonListeners() {
     showGuideBtn = document.getElementById('show-guide-btn');
     appStatus = document.getElementById('app-status');
     targetJobInput = document.getElementById('target-job-input');
+    editJobBtn = document.getElementById('edit-job-btn');
     saveResultBtn = document.getElementById('save-result-btn');
 
-    // 파일 선택 요소
     btnJD = document.getElementById('select-jd-btn');
     textJD = document.getElementById('jd-name');
     btnResume = document.getElementById('select-resume-btn');
@@ -147,7 +162,6 @@ function setupSidebarButtonListeners() {
     btnExp = document.getElementById('select-exp-btn');
     textExp = document.getElementById('exp-name');
 
-    // 기능 실행 요소
     btnRunAnalysis = document.getElementById('run-analysis-btn');
     btnRunDraft = document.getElementById('run-draft-btn');
     inputDraftItem = document.getElementById('draft-item-input');
@@ -157,6 +171,16 @@ function setupSidebarButtonListeners() {
 
     if (selectWorkspaceBtn) {
         selectWorkspaceBtn.addEventListener('click', handleWorkspaceSelection);
+    }
+
+    if (editJobBtn) {
+        editJobBtn.addEventListener('click', () => {
+            targetJobInput.disabled = false;
+            applyInstructionBtn.disabled = false;
+            editJobBtn.style.display = 'none';
+            enableFeatureButtons(false);
+            updateStatus('직무 수정 중...', '#ffca28');
+        });
     }
 
     if (applyInstructionBtn) {
@@ -172,43 +196,39 @@ function setupSidebarButtonListeners() {
             if (term) term.focus();
             const cmd = `$희망직무 = '${jobName}'; Get-Content 지침.md | gemini`;
             window.electronAPI.sendCommandToTerminal(cmd);
+            
             setTimeout(() => {
                 window.electronAPI.triggerHardwareEnter();
                 setTimeout(() => {
-                    enableFeatureButtons();
+                    enableFeatureButtons(true);
                     applyInstructionBtn.disabled = true;
                     targetJobInput.disabled = true; 
+                    editJobBtn.style.display = 'block';
+                    updateStatus('Gemini 준비 완료', '#00ff00');
                 }, 500);
             }, 200);
         });
     }
 
-    // 결과 저장 기능
     if (saveResultBtn) {
         saveResultBtn.addEventListener('click', async () => {
-            if (!lastOutputBuffer) {
-                alert("저장할 내용이 없습니다.");
+            const content = getTerminalResponse();
+            if (!content || content.length < 5) {
+                alert("저장할 내용이 없거나 너무 짧습니다.");
                 return;
             }
 
-            // 터미널 제어 문자 제거 (ANSI escape codes 제거)
-            const cleanContent = lastOutputBuffer.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, "").trim();
-            
-            const defaultName = `Resume_Gem_Result_${new Date().toISOString().slice(0,10)}.md`;
+            const defaultName = `Resume_Gem_${lastActionName}_${new Date().toISOString().slice(0,10)}.md`;
             const filePath = await window.electronAPI.saveFileDialog(defaultName);
             
             if (filePath) {
-                const success = await window.electronAPI.writeResultFile(filePath, cleanContent);
-                if (success) {
-                    alert("성공적으로 저장되었습니다.");
-                } else {
-                    alert("저장에 실패했습니다.");
-                }
+                const success = await window.electronAPI.writeResultFile(filePath, content);
+                if (success) alert("성공적으로 저장되었습니다.");
+                else alert("저장에 실패했습니다.");
             }
         });
     }
 
-    // 공통 파일 선택 로직
     btnJD.addEventListener('click', async () => {
         const path = await window.electronAPI.selectFile();
         if (path) { sharedFiles.jd = path; textJD.innerText = "✓ " + window.electronAPI.getBasename(path); textJD.style.color = "#00ff00"; }
@@ -222,10 +242,9 @@ function setupSidebarButtonListeners() {
         if (path) { sharedFiles.exp = path; textExp.innerText = "✓ " + window.electronAPI.getBasename(path); textExp.style.color = "#00ff00"; }
     });
 
-    // 기능 실행 로직 (수집 시작 추가)
     btnRunAnalysis.addEventListener('click', () => {
         if (!sharedFiles.jd) { alert("JD 파일을 먼저 선택해주세요!"); return; }
-        startCollectingOutput();
+        startAction("직무분석");
         btnRunAnalysis.blur(); if (term) term.focus();
         window.electronAPI.sendCommandToTerminal(`1번 직무 분석 수행. JD: "${sharedFiles.jd}"`);
         setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
@@ -233,7 +252,7 @@ function setupSidebarButtonListeners() {
 
     btnRunDraft.addEventListener('click', () => {
         if (!sharedFiles.exp) { alert("경험 기술서를 먼저 선택해주세요!"); return; }
-        startCollectingOutput();
+        startAction("자소서초안");
         btnRunDraft.blur(); if (term) term.focus();
         const item = inputDraftItem.value || "자유 항목";
         window.electronAPI.sendCommandToTerminal(`2번 자소서 초안 작성 수행. 항목: '${item}', 경험기술서: "${sharedFiles.exp}"`);
@@ -242,7 +261,7 @@ function setupSidebarButtonListeners() {
 
     btnRunFeedback.addEventListener('click', () => {
         if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
-        startCollectingOutput();
+        startAction("첨삭피드백");
         btnRunFeedback.blur(); if (term) term.focus();
         window.electronAPI.sendCommandToTerminal(`3번 자소서 첨삭 수행. 작성된 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
         setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
@@ -250,7 +269,7 @@ function setupSidebarButtonListeners() {
 
     btnRunInterview.addEventListener('click', () => {
         if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
-        startCollectingOutput();
+        startAction("면접질문");
         btnRunInterview.blur(); if (term) term.focus();
         window.electronAPI.sendCommandToTerminal(`4번 면접 질문 도출 수행. 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
         setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
@@ -258,7 +277,7 @@ function setupSidebarButtonListeners() {
 
     btnRunHumanize.addEventListener('click', () => {
         if (!sharedFiles.resume) { alert("자소서 파일을 선택해주세요!"); return; }
-        startCollectingOutput();
+        startAction("표현다듬기");
         btnRunHumanize.blur(); if (term) term.focus();
         window.electronAPI.sendCommandToTerminal(`5번 AI 표현 다듬기 수행. 자소서: "${sharedFiles.resume}"`);
         setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
