@@ -23,7 +23,8 @@ function updateStatus(text, color = '#007acc') {
 }
 
 function enableAllButtons() {
-    const buttons = document.querySelectorAll('.sidebar button[disabled]');
+    // 모든 기능 및 지침 버튼 활성화 (워크스페이스 지정 버튼은 제외)
+    const buttons = document.querySelectorAll('.sidebar button:not(#select-ws-btn):not(#show-guide-btn)');
     buttons.forEach(btn => {
         btn.disabled = false;
     });
@@ -90,6 +91,10 @@ async function handleWorkspaceSelection() {
         sidebar.style.display = 'flex';
         updateStatus('호출 중...', '#ffca28');
         isReady = false;
+        
+        // 버튼 비활성화 시각화 및 실제 동작 차단
+        selectWorkspaceBtn.disabled = true;
+        
         initializeTerminal();
     } else {
         updateStatus('대기 중...');
@@ -104,10 +109,6 @@ function setupSidebarButtonListeners() {
     if (applyInstructionBtn) {
         applyInstructionBtn.addEventListener('click', (e) => {
             if (!isReady) return;
-            if (terminalWrapper.style.display === 'none') {
-                alert("먼저 워크스페이스를 지정하세요!");
-                return;
-            }
             applyInstructionBtn.blur();
             if (term) term.focus();
             window.electronAPI.sendCommandToTerminal("Get-Content 지침.md | gemini");
@@ -122,10 +123,6 @@ function setupSidebarButtonListeners() {
     sidebarButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (!isReady) return;
-            if (terminalWrapper.style.display === 'none') {
-                alert("먼저 워크스페이스를 지정하세요!");
-                return;
-            }
             button.blur();
             if (term) term.focus();
             const command = button.dataset.command;
