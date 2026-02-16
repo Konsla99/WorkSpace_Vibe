@@ -2,7 +2,7 @@
   "name": "resume-gem",
   "version": "1.0.0",
   "description": "Electron app to control gemini CLI",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
@@ -25,7 +25,7 @@
     "productName": "Resume_Gem",
     "win": {
       "target": "nsis",
-      "icon": "./APP_icon.ico"
+      "icon": "assets/APP_icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -40,13 +40,10 @@
       "**/node_modules/node-pty/**/*"
     ],
     "files": [
-      "main.js",
-      "preload.js",
-      "renderer.js",
-      "design.html",
+      "src/**/*",
+      "assets/**/*",
+      "docs/**/*",
       "package.json",
-      "기능.txt",
-      "설정 방법.md",
       "node_modules/**/*"
     ]
   }

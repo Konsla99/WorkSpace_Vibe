@@ -146,7 +146,7 @@ ipcMain.handle('read-instruction', async (event, workspacePath) => {
 });
 
 ipcMain.on('show-setup-guide', () => {
-    const guidePath = path.join(__dirname, '설정 방법.md');
+    const guidePath = path.join(__dirname, '..', 'docs', '설정 방법.md');
     if (fs.existsSync(guidePath)) {
         electronShell.openPath(guidePath);
     } else {
