@@ -144,9 +144,10 @@ function setupSidebarButtonListeners() {
         applyInstructionBtn.addEventListener('click', (e) => {
             if (!isReady) return;
             
+            // 희망 직무 입력값 확인
             const jobName = targetJobInput.value.trim();
-            if (!jobName) {
-                alert("AI의 페르소나 설정을 위해 '희망 직무'를 먼저 입력해주세요!");
+            if (!jobName || jobName === "") {
+                alert("희망 직무를 작성해 주세요!"); // 요청하신 메시지 문구 적용
                 targetJobInput.focus();
                 return;
             }
@@ -154,7 +155,7 @@ function setupSidebarButtonListeners() {
             applyInstructionBtn.blur();
             if (term) term.focus();
             
-            // 희망 직무를 변수로 설정하고 지침 전달
+            // 희망 직무와 함께 지침 전달
             const cmd = `$희망직무 = '${jobName}'; Get-Content 지침.md | gemini`;
             window.electronAPI.sendCommandToTerminal(cmd);
             
@@ -163,7 +164,7 @@ function setupSidebarButtonListeners() {
                 setTimeout(() => {
                     enableFeatureButtons();
                     applyInstructionBtn.disabled = true;
-                    targetJobInput.disabled = true; // 직무 변경 방지
+                    targetJobInput.disabled = true; 
                 }, 500);
             }, 200);
         });
