@@ -144,15 +144,8 @@ ipcMain.on('init-terminal', (event) => {
 
     // Initial commands - Give a small delay to ensure shell is ready
     setTimeout(() => {
-        if (currentWorkspace) {
-            ptyProcess.write(`cd "${currentWorkspace}"\r\n`);
-            
-            setTimeout(() => {
-                ptyProcess.write(`gemini\r\n`);
-            }, 1000);
-        } else {
-            ptyProcess.write(`gemini\r\n`);
-        }
+        // 워크스페이스 지정 시 즉시 gemini 실행 (원복)
+        ptyProcess.write(`gemini\r\n`);
     }, 2000);
 });
 
@@ -200,10 +193,24 @@ ipcMain.handle('read-instruction', async (event, workspacePath) => {
 });
 
 ipcMain.on('show-setup-guide', () => {
-    const guidePath = path.join(app.getAppPath(), 'docs', '설정 방법.md');
-    if (fs.existsSync(guidePath)) {
-        electronShell.openPath(guidePath);
-    } else {
-        dialog.showErrorBox('오류', '설정 방법.md 파일을 찾을 수 없습니다.');
+    try {
+        const sourcePath = path.join(app.getAppPath(), 'docs', '설정_방법.md');
+        
+        if (fs.existsSync(sourcePath)) {
+            // 시스템 임시 폴더 경로 획득
+            const tempPath = path.join(app.getPath('temp'), 'Resume_Gem_Guide.md');
+            
+            // 파일 내용 읽기 및 임시 파일 쓰기
+            const content = fs.readFileSync(sourcePath, 'utf8');
+            fs.writeFileSync(tempPath, content, 'utf8');
+            
+            // 임시 파일 열기
+            electronShell.openPath(tempPath);
+        } else {
+            dialog.showErrorBox('오류', `가이드 원본 파일을 찾을 수 없습니다.\n앱 내부 경로: ${sourcePath}`);
+        }
+    } catch (err) {
+        console.error("가이드 열기 실패:", err);
+        dialog.showErrorBox('오류', `가이드를 여는 중 에러가 발생했습니다: ${err.message}`);
     }
 });

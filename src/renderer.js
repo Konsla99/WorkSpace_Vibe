@@ -14,7 +14,7 @@ let isReady = false;
 let sharedFiles = { jd: null, resume: null, exp: null };
 
 // Result Saving State
-let startLineIndex = 0; // 명령어 시작 시점의 터미널 라인 번호
+let startLineIndex = 0; 
 let lastActionName = "Result";
 
 function updateStatus(text, color = '#007acc') {
@@ -53,7 +53,6 @@ function initializeTerminal() {
     term.loadAddon(fitAddon);
     term.open(terminalBody);
     
-    // 초기 크기 맞춤
     setTimeout(() => fitAddon.fit(), 100);
 
     term.onData(data => {
@@ -70,10 +69,10 @@ function initializeTerminal() {
             updateStatus('Gemini 준비 완료', '#00ff00');
             enableInstructionButton();
         } else {
-            // 답변 완료 시 (명령어 실행 중이었다면)
-            if (saveResultBtn.disabled) {
+            // 이미 준비된 상태에서 트리거가 왔다면 답변이 종료된 것으로 간주
+            if (saveResultBtn && saveResultBtn.disabled) {
                 saveResultBtn.disabled = false;
-                updateStatus('분석 완료 (결과 저장 가능)', '#00ff00');
+                updateStatus('Gemini 준비 완료 (결과 저장 가능)', '#00ff00');
             }
         }
     });
@@ -84,9 +83,8 @@ function initializeTerminal() {
         isReady = false;
     });
 
-    // 리사이즈 로직 개선 (깨짐 방지)
     const resizeObserver = new ResizeObserver(() => {
-        if (terminalWrapper.style.display !== 'none') {
+        if (terminalWrapper && terminalWrapper.style.display !== 'none') {
             fitAddon.fit();
             window.electronAPI.resizeTerminal(term.cols, term.rows);
         }
@@ -114,19 +112,16 @@ async function handleWorkspaceSelection() {
     }
 }
 
-// 터미널 버퍼에서 순수 텍스트 추출 (핵심!)
 function getTerminalResponse() {
     const buffer = term.buffer.active;
     let responseText = "";
-    // 명령어가 시작된 라인부터 현재 마지막 라인까지 읽음
-    for (let i = startLineIndex; i < buffer.length; i++) {
+    // 명령어 전송 시점부터 현재 커서 위치까지 버퍼 추출
+    for (let i = startLineIndex; i < buffer.baseY + buffer.cursorY; i++) {
         const line = buffer.getLine(i);
         if (line) {
             responseText += line.translateToString().trimEnd() + "\n";
         }
     }
-    
-    // 터미널 찌꺼기 필터링 (한 번 더)
     return responseText
         .replace(/Type\s+your\s+message.*/gi, "")
         .replace(/~\/workspace.*\/model/gi, "")
@@ -134,10 +129,10 @@ function getTerminalResponse() {
 }
 
 function startAction(actionName) {
-    // 현재 터미널의 마지막 라인 위치 저장
+    // 현재 버퍼의 마지막 위치를 시작점으로 기록
     startLineIndex = term.buffer.active.baseY + term.buffer.active.cursorY;
     lastActionName = actionName;
-    saveResultBtn.disabled = true;
+    if (saveResultBtn) saveResultBtn.disabled = true;
     updateStatus('Gemini 분석 중...', '#ffca28');
 }
 
@@ -194,6 +189,7 @@ function setupSidebarButtonListeners() {
             }
             applyInstructionBtn.blur();
             if (term) term.focus();
+            
             const cmd = `$희망직무 = '${jobName}'; Get-Content 지침.md | gemini`;
             window.electronAPI.sendCommandToTerminal(cmd);
             
@@ -217,10 +213,8 @@ function setupSidebarButtonListeners() {
                 alert("저장할 내용이 없거나 너무 짧습니다.");
                 return;
             }
-
             const defaultName = `Resume_Gem_${lastActionName}_${new Date().toISOString().slice(0,10)}.md`;
             const filePath = await window.electronAPI.saveFileDialog(defaultName);
-            
             if (filePath) {
                 const success = await window.electronAPI.writeResultFile(filePath, content);
                 if (success) alert("성공적으로 저장되었습니다.");
@@ -229,59 +223,75 @@ function setupSidebarButtonListeners() {
         });
     }
 
-    btnJD.addEventListener('click', async () => {
-        const path = await window.electronAPI.selectFile();
-        if (path) { sharedFiles.jd = path; textJD.innerText = "✓ " + window.electronAPI.getBasename(path); textJD.style.color = "#00ff00"; }
-    });
-    btnResume.addEventListener('click', async () => {
-        const path = await window.electronAPI.selectFile();
-        if (path) { sharedFiles.resume = path; textResume.innerText = "✓ " + window.electronAPI.getBasename(path); textResume.style.color = "#00ff00"; }
-    });
-    btnExp.addEventListener('click', async () => {
-        const path = await window.electronAPI.selectFile();
-        if (path) { sharedFiles.exp = path; textExp.innerText = "✓ " + window.electronAPI.getBasename(path); textExp.style.color = "#00ff00"; }
-    });
+    if (btnJD) {
+        btnJD.addEventListener('click', async () => {
+            const path = await window.electronAPI.selectFile();
+            if (path) { sharedFiles.jd = path; textJD.innerText = "✓ " + window.electronAPI.getBasename(path); textJD.style.color = "#00ff00"; }
+        });
+    }
+    if (btnResume) {
+        btnResume.addEventListener('click', async () => {
+            const path = await window.electronAPI.selectFile();
+            if (path) { sharedFiles.resume = path; textResume.innerText = "✓ " + window.electronAPI.getBasename(path); textResume.style.color = "#00ff00"; }
+        });
+    }
+    if (btnExp) {
+        btnExp.addEventListener('click', async () => {
+            const path = await window.electronAPI.selectFile();
+            if (path) { sharedFiles.exp = path; textExp.innerText = "✓ " + window.electronAPI.getBasename(path); textExp.style.color = "#00ff00"; }
+        });
+    }
 
-    btnRunAnalysis.addEventListener('click', () => {
-        if (!sharedFiles.jd) { alert("JD 파일을 먼저 선택해주세요!"); return; }
-        startAction("직무분석");
-        btnRunAnalysis.blur(); if (term) term.focus();
-        window.electronAPI.sendCommandToTerminal(`1번 직무 분석 수행. JD: "${sharedFiles.jd}"`);
-        setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
-    });
+    if (btnRunAnalysis) {
+        btnRunAnalysis.addEventListener('click', () => {
+            if (!sharedFiles.jd) { alert("JD 파일을 먼저 선택해주세요!"); return; }
+            startAction("직무분석");
+            btnRunAnalysis.blur(); if (term) term.focus();
+            window.electronAPI.sendCommandToTerminal(`1번 직무 분석 수행. JD: "${sharedFiles.jd}"`);
+            setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
+        });
+    }
 
-    btnRunDraft.addEventListener('click', () => {
-        if (!sharedFiles.exp) { alert("경험 기술서를 먼저 선택해주세요!"); return; }
-        startAction("자소서초안");
-        btnRunDraft.blur(); if (term) term.focus();
-        const item = inputDraftItem.value || "자유 항목";
-        window.electronAPI.sendCommandToTerminal(`2번 자소서 초안 작성 수행. 항목: '${item}', 경험기술서: "${sharedFiles.exp}"`);
-        setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
-    });
+    if (btnRunDraft) {
+        btnRunDraft.addEventListener('click', () => {
+            if (!sharedFiles.exp) { alert("경험 기술서를 먼저 선택해주세요!"); return; }
+            startAction("자소서초안");
+            btnRunDraft.blur(); if (term) term.focus();
+            const item = inputDraftItem.value || "자유 항목";
+            window.electronAPI.sendCommandToTerminal(`2번 자소서 초안 작성 수행. 항목: '${item}', 경험기술서: "${sharedFiles.exp}"`);
+            setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
+        });
+    }
 
-    btnRunFeedback.addEventListener('click', () => {
-        if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
-        startAction("첨삭피드백");
-        btnRunFeedback.blur(); if (term) term.focus();
-        window.electronAPI.sendCommandToTerminal(`3번 자소서 첨삭 수행. 작성된 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
-        setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
-    });
+    if (btnRunFeedback) {
+        btnRunFeedback.addEventListener('click', () => {
+            if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
+            startAction("첨삭피드백");
+            btnRunFeedback.blur(); if (term) term.focus();
+            window.electronAPI.sendCommandToTerminal(`3번 자소서 첨삭 수행. 작성된 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
+            setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
+        });
+    }
 
-    btnRunInterview.addEventListener('click', () => {
-        if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
-        startAction("면접질문");
-        btnRunInterview.blur(); if (term) term.focus();
-        window.electronAPI.sendCommandToTerminal(`4번 면접 질문 도출 수행. 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
-        setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
-    });
+    if (btnRunInterview) {
+        btnRunInterview.addEventListener('click', () => {
+            if (!sharedFiles.resume || !sharedFiles.jd) { alert("자소서와 JD 파일을 모두 선택해주세요!"); return; }
+            startAction("면접질문");
+            btnRunInterview.blur(); if (term) term.focus();
+            window.electronAPI.sendCommandToTerminal(`4번 면접 질문 도출 수행. 자소서: "${sharedFiles.resume}", JD: "${sharedFiles.jd}"`);
+            setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
+        });
+    }
 
-    btnRunHumanize.addEventListener('click', () => {
-        if (!sharedFiles.resume) { alert("자소서 파일을 선택해주세요!"); return; }
-        startAction("표현다듬기");
-        btnRunHumanize.blur(); if (term) term.focus();
-        window.electronAPI.sendCommandToTerminal(`5번 AI 표현 다듬기 수행. 자소서: "${sharedFiles.resume}"`);
-        setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
-    });
+    if (btnRunHumanize) {
+        btnRunHumanize.addEventListener('click', () => {
+            if (!sharedFiles.resume) { alert("자소서 파일을 선택해주세요!"); return; }
+            startAction("표현다듬기");
+            btnRunHumanize.blur(); if (term) term.focus();
+            window.electronAPI.sendCommandToTerminal(`5번 AI 표현 다듬기 수행. 자소서: "${sharedFiles.resume}"`);
+            setTimeout(() => window.electronAPI.triggerHardwareEnter(), 100);
+        });
+    }
 
     if (showGuideBtn) {
         showGuideBtn.addEventListener('click', () => {
