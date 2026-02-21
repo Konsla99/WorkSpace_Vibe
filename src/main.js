@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog, shell: electronShell } = require('electron');
 const path = require('path');
-const pty = require('node-pty');
+const pty = app.isPackaged 
+    ? require(path.join(process.resourcesPath, 'lib', 'node-pty'))
+    : require('node-pty');
 const os = require('os');
 const fs = require('fs');
 
@@ -62,7 +64,7 @@ ipcMain.handle('select-folder', async () => {
         // 지침.md 자동 생성 및 갱신 로직 (배포 환경 대응)
         try {
             const targetPath = path.join(currentWorkspace, '지침.md');
-            const sourcePath = path.join(app.getAppPath(), 'docs', '지침.md');
+            const sourcePath = path.join(process.resourcesPath, 'lib', 'docs', '지침.md');
             
             if (fs.existsSync(sourcePath)) {
                 // 항상 최신 지침으로 덮어쓰기
@@ -194,7 +196,7 @@ ipcMain.handle('read-instruction', async (event, workspacePath) => {
 
 ipcMain.on('show-setup-guide', () => {
     try {
-        const sourcePath = path.join(app.getAppPath(), 'docs', '설정_방법.md');
+        const sourcePath = path.join(process.resourcesPath, 'lib', 'docs', '설정_방법.md');
         
         if (fs.existsSync(sourcePath)) {
             // 시스템 임시 폴더 경로 획득

@@ -29,20 +29,28 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "shortcutName": "Resume_Gem"
+      "allowToChangeInstallationDirectory": true
     },
     "directories": {
       "output": "dist"
     },
     "asar": true,
-    "asarUnpack": [
-      "node_modules/node-pty"
+    "extraResources": [
+      {
+        "from": "node_modules/node-pty",
+        "to": "lib/node-pty"
+      },
+      {
+        "from": "docs",
+        "to": "lib/docs"
+      },
+      {
+        "from": "assets",
+        "to": "lib/assets"
+      }
     ],
     "files": [
       "src/**/*",
-      "assets/**/*",
-      "docs/**/*",
       "package.json"
     ]
   }
