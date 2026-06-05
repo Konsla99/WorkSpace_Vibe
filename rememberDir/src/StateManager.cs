@@ -14,21 +14,18 @@ namespace rememberDir
 
         public static void SaveState(DirectoryState state)
         {
-            try
+            // 폴더가 없으면 생성
+            if (!Directory.Exists(AppDataPath))
             {
-                if (!Directory.Exists(AppDataPath))
-                {
-                    Directory.CreateDirectory(AppDataPath);
-                }
+                Directory.CreateDirectory(AppDataPath);
+            }
 
-                string json = JsonConvert.SerializeObject(state, Formatting.Indented);
-                File.WriteAllText(StateFilePath, json);
-            }
-            catch (Exception ex)
-            {
-                // In a real app, we might log this or show a message
-                Console.WriteLine($"Error saving state: {ex.Message}");
-            }
+            // JSON 직렬화
+            string json = JsonConvert.SerializeObject(state, Formatting.Indented);
+            
+            // 파일을 완전히 새로 덮어씁니다 (Overwrite)
+            // 에러 발생 시 호출한 쪽(UI)에서 catch할 수 있도록 throw를 허용합니다.
+            File.WriteAllText(StateFilePath, json);
         }
 
         public static DirectoryState LoadState()
@@ -41,9 +38,9 @@ namespace rememberDir
                     return JsonConvert.DeserializeObject<DirectoryState>(json) ?? new DirectoryState();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error loading state: {ex.Message}");
+                // 로드 실패 시 새 객체 반환
             }
 
             return new DirectoryState();
