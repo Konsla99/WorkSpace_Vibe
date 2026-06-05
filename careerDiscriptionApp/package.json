@@ -1,0 +1,57 @@
+{
+  "name": "resume-gem",
+  "version": "1.0.0",
+  "description": "Electron app to control gemini CLI",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "node-pty": "^1.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  },
+  "build": {
+    "appId": "com.resume.gem",
+    "productName": "Resume_Gem",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/APP_icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "extraResources": [
+      {
+        "from": "node_modules/node-pty",
+        "to": "lib/node-pty"
+      },
+      {
+        "from": "docs",
+        "to": "lib/docs"
+      },
+      {
+        "from": "assets",
+        "to": "lib/assets"
+      }
+    ],
+    "files": [
+      "src/**/*",
+      "package.json"
+    ]
+  }
+}
