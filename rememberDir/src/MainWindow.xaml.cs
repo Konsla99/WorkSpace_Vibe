@@ -148,46 +148,95 @@ namespace rememberDir
             var validPaths = paths.Where(p => Directory.Exists(p)).ToList();
             if (validPaths.Count == 0) return;
 
+            StatusText.Text = "탐색기를 실행 중입니다. 잠시만 기다려주세요...";
+            
             // 1. 첫 번째 경로 실행
             Process.Start("explorer.exe", $"\"{validPaths[0]}\"");
 
-            if (validPaths.Count == 1) return;
+            if (validPaths.Count == 1)
+            {
+                await Task.Delay(1000);
+                StatusText.Text = "복원이 완료되었습니다.";
+                return;
+            }
 
-            // 첫 번째 창 로딩 대기 (충분한 시간 부여)
-            await Task.Delay(3500);
+            // 첫 번째 창이 완전히 로드될 때까지 대기
+            await Task.Delay(3000);
 
-            // 2. 나머지 경로 탭으로 추가
+            // 2. 나머지 경로 복원
             for (int i = 1; i < validPaths.Count; i++)
             {
                 try
                 {
-                    StatusText.Text = $"복원 중 ({i + 1}/{validPaths.Count}): {Path.GetFileName(validPaths[i])}";
-                    
-                    // 탐색기 창을 활성화하기 위해 HWND 찾기 시도
+                    StatusText.Text = $"복원 중 ({i + 1}/{validPaths.Count}): {Path.GetFileName(validPaths[i])}\n(복원 중에는 다른 창을 클릭하셔도 안전합니다)";
+
+                    // 새 탭 생성 (이 부분은 API가 없어 Ctrl+T 사용이 불가피함)
                     IntPtr explorerHwnd = FindExplorerHwnd(validPaths[0]);
                     if (explorerHwnd != IntPtr.Zero)
                     {
                         SetForegroundWindow(explorerHwnd);
-                        await Task.Delay(300);
+                        await Task.Delay(100);
                     }
-
-                    // 새 탭 열기 (Ctrl+T)
-                    System.Windows.Forms.SendKeys.SendWait("^{t}");
-                    await Task.Delay(1200);
-
-                    // 주소창 포커스 (Alt+D)
-                    System.Windows.Forms.SendKeys.SendWait("%d");
-                    await Task.Delay(600);
-
-                    // 경로 입력 및 엔터
-                    string escapedPath = EscapeSendKeys(validPaths[i]);
-                    System.Windows.Forms.SendKeys.SendWait(escapedPath + "{ENTER}");
                     
-                    // 다음 탭 열기 전 대기 (충분한 시간 부여)
-                    await Task.Delay(2000);
+                    System.Windows.Forms.SendKeys.SendWait("^{t}");
+                    
+                    // 새 탭 객체가 ShellWindows 컬렉션에 등록될 때까지 대기
+                    await Task.Delay(800);
+
+                    // 새로 생성된 탭 객체를 찾아 Navigate2 호출 (키보드 입력 없음)
+                    await NavigateNewTab(validPaths[i]);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Restore Error at {i}: {ex.Message}");
+                }
             }
+
+            StatusText.Text = "모든 경로 복원이 완료되었습니다.";
+        }
+
+        private async Task NavigateNewTab(string targetPath)
+        {
+            try
+            {
+                Type? shellAppType = Type.GetTypeFromProgID("Shell.Application");
+                if (shellAppType == null) return;
+
+                dynamic shellApp = Activator.CreateInstance(shellAppType)!;
+                
+                // 여러 번 시도하여 새로 생성된 빈 탭을 포착
+                for (int retry = 0; retry < 10; retry++)
+                {
+                    dynamic windows = shellApp.Windows();
+                    int count = 0;
+                    try { count = windows.Count; } catch { }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        try
+                        {
+                            dynamic window = windows.Item(i);
+                            if (window == null) continue;
+
+                            string currentPath = "";
+                            try { currentPath = (string)window.Document.Folder.Self.Path; } catch { }
+
+                            // 탭이 생성된 직후에는 보통 경로가 비어있거나 특정 기본값임
+                            if (string.IsNullOrEmpty(currentPath) || 
+                                currentPath.StartsWith("::") || 
+                                currentPath.Equals(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), StringComparison.OrdinalIgnoreCase))
+                            {
+                                // COM Navigate2 호출 (백그라운드에서 메모리 주입 방식으로 이동)
+                                window.Navigate2(targetPath);
+                                return; 
+                            }
+                        }
+                        catch { }
+                    }
+                    await Task.Delay(400); 
+                }
+            }
+            catch { }
         }
 
         private IntPtr FindExplorerHwnd(string anchorPath)
