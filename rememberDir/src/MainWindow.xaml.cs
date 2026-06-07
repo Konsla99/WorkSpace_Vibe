@@ -79,7 +79,7 @@ namespace rememberDir
                 int count = 0;
                 try { count = windows.Count; } catch { }
 
-                // 인덱스 기반으로 모든 창을 순회 (Windows 11 탭 포함)
+                // 모든 창을 순회 (Windows 11 탭 포함)
                 for (int i = 0; i < count; i++)
                 {
                     try
@@ -89,22 +89,26 @@ namespace rememberDir
 
                         string fullName = "";
                         try { fullName = (string)window.FullName; } catch { }
+                        
+                        string name = "";
+                        try { name = (string)window.Name; } catch { }
 
-                        // 탐색기 프로세스인지 확인
-                        bool isExplorer = string.IsNullOrEmpty(fullName) || 
-                                          Path.GetFileNameWithoutExtension(fullName).ToLower() == "explorer";
+                        // 탐색기 프로세스인지 더 넓은 범위로 확인
+                        bool isExplorer = fullName.ToLower().Contains("explorer.exe") || 
+                                          name.Contains("Explorer") || 
+                                          name.Contains("탐색기") ||
+                                          string.IsNullOrEmpty(fullName);
 
                         if (isExplorer)
                         {
                             string path = "";
                             
-                            // 1. Document 객체로부터 경로 추출
+                            // 1. Document 객체로부터 경로 추출 (가장 정확함)
                             try
                             {
-                                dynamic doc = window.Document;
-                                if (doc != null)
+                                if (window.Document != null && window.Document.Folder != null)
                                 {
-                                    path = (string)doc.Folder.Self.Path;
+                                    path = (string)window.Document.Folder.Self.Path;
                                 }
                             }
                             catch { }
@@ -123,18 +127,35 @@ namespace rememberDir
                                 catch { }
                             }
 
+                            // 3. LocationName 확인 (특수 폴더 등 대비)
+                            if (string.IsNullOrEmpty(path))
+                            {
+                                try
+                                {
+                                    string locName = (string)window.LocationName;
+                                    if (Directory.Exists(locName))
+                                    {
+                                        path = locName;
+                                    }
+                                }
+                                catch { }
+                            }
+
                             if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
                             {
                                 paths.Add(path);
                             }
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Window Item Error: {ex.Message}");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error: {ex.Message}");
+                Debug.WriteLine($"Shell Access Error: {ex.Message}");
             }
 
             // 중복 경로 제거 및 정렬
