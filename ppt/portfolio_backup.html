@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채민기 | 개발자 포트폴리오</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <style>
+        :root {
+            --point-color: #6200EA;
+            --text-color: #333;
+            --wrapper-bg: #F5F7FA;
+            --border-color: #e0e0e0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* White page background */
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .main-wrapper {
+            background-color: var(--wrapper-bg);
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 20px;
+        }
+        .container {
+            width: 100%;
+            overflow: hidden;
+        }
+        /* Header & Navigation */
+        header {
+            background-color: transparent;
+            padding: 10px 0 30px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+        header .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--point-color);
+        }
+        header nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        header nav ul li {
+            display: inline-block;
+            margin-left: 25px;
+        }
+        header nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+        header nav a:hover {
+            color: var(--point-color);
+        }
+
+        /* Section Base */
+        section {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* About Me Section */
+        #about {
+            background-color: transparent;
+            padding-top: 0;
+        }
+        #about-top-row {
+            display: grid;
+            grid-template-columns: 3fr 7fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        #about-bottom-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .about-column {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+        }
+
+        .profile-img-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.2em;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .about-column .item p {
+            font-size: 13px;
+        }
+        .education-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .education-duration {
+            white-space: nowrap;
+        }
+        .education-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .education-duration {
+            white-space: nowrap;
+        }
+        .about-column h3 {
+            border-left: 5px solid var(--point-color);
+            padding-left: 10px;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .about-column h4 {
+            font-size: 1.02em; /* Smaller than h3 for sub-category */
+            margin-bottom: 15px;
+            margin-top: 0;
+            color: #555; /* Muted color for sub-category */
+        }
+        .experience-entry {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .experience-entry:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        /* Experiences & Projects Section */
+        .item {
+            background-color: #FFFFFF;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .department-inline { /* New style for inline department */
+            font-size: 0.8em;
+            font-weight: normal;
+            color: #777;
+            margin-left: 8px;
+        }
+        .item-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--point-color);
+            margin: 0;
+        }
+        .item-period {
+            font-size: 0.9em;
+            color: #666;
+            white-space: nowrap;
+            /* No padding-top here for stacked layout */
+        }
+        .project-subtitle {
+            background-color: rgba(98, 0, 234, 0.05);
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1.0em;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: var(--point-color);
+            display: inline-block;
+        }
+        .item-body ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        .item-body ul li {
+            margin-bottom: 8px;
+        }
+        .tech-stack {
+            margin-top: 15px;
+        }
+        .tech-stack .tech {
+            display: inline-block;
+            background-color: #e7e0f9;
+            color: var(--point-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .project-wide-card {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+            background-color: #FFFFFF;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        .project-img-placeholder {
+            flex: 1;
+            min-width: 250px;
+            height: auto;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.2em;
+            border-radius: 8px;
+        }
+        .project-image {
+            flex: 1;
+            min-width: 250px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            /* border-radius: 8px; */
+            /* box-shadow: 0 10px 25px rgba(0,0,0,0.15); */
+            transition: transform 0.3s ease;
+        }
+        .project-image:hover {
+            transform: translateY(-5px);
+        }
+        .project-details {
+            flex: 2;
+        }
+        .project-group {
+            border: 1px solid var(--border-color); /* Subtle border for the outer group */
+            border-radius: 16px;
+            margin-bottom: 40px;
+            background-color: var(--wrapper-bg); /* Distinct background for the wrapper */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* More prominent shadow for the group */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            padding: 15px; /* Padding for the inner cards to sit in */
+        }
+        .project-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        .project-group .project-wide-card {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Give inner cards their shadow back */
+            margin-bottom: 15px; /* Space between the two inner cards */
+            padding: 25px;
+            gap: 25px;
+            border-radius: 12px; /* Inner cards have rounded corners */
+            background-color: #FFFFFF; /* Ensure inner cards are white */
+            border-bottom: none; /* Remove the dashed line from inner cards */
+        }
+        .project-group .project-wide-card:last-child {
+            margin-bottom: 0;
+            padding-top: 25px; /* Ensure padding-top is consistent */
+            border-top: none; /* Ensure no unwanted border */
+        }
+
+        /* For cards that should only contain an image */
+        .project-wide-card.image-card {
+            padding: 0;
+            overflow: hidden; /* Ensures child image corners are clipped */
+        }
+
+        /* For side-by-side images within a card */
+        .side-by-side-images {
+            display: flex;
+            width: 100%;
+        }
+        .side-by-side-images .project-image {
+            min-width: 0; /* Override default min-width for flex items */
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .skill-category {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 20px; /* Spacing between skill categories */
+        }
+        .skill-category:last-child {
+            margin-bottom: 0;
+        }
+        .skill-category h3 { /* Main Skills heading, should remain h3 in HTML */
+            margin-top: 0;
+            color: var(--point-color);
+        }
+        .skill-category ul {
+            list-style: none;
+            padding: 0;
+        }
+        .skill-category li {
+            margin-bottom: 10px; /* Reset margin */
+            display: block;
+        }
+        .skill-category i {
+            font-size: 1.8em;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .skill-name {
+            flex-grow: 1;
+            font-weight: bold; /* Make skill name bold */
+            font-size: 0.8211em; /* Make it smaller than category heading */
+        }
+        .skill-level {
+            font-size: 0.9em;
+            color: #333; /* Make level darker */
+            font-weight: 600; /* Make level bolder */
+        }
+
+        .skill-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .skill-info {
+            display: flex;
+            align-items: center;
+        }
+        .skill-bar-background {
+            background-color: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 120px; /* Fixed width for the bar */
+            margin-left: 20px; /* Spacing between skill name and graph */
+        }
+        .skill-bar-fill {
+            background-color: var(--point-color);
+            height: 100%;
+            border-radius: 4px;
+        }
+        .skill-graph-labels span {
+            position: relative;
+            /* Optional: Add a small line marker if needed */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0 0 0;
+            background-color: transparent;
+            color: #888;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+        footer p { margin: 5px 0; }
+        footer a { color: var(--point-color); text-decoration: none; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                margin: 10px;
+                padding: 20px;
+                border-radius: 10px;
+            }
+            .container {
+                padding: 0;
+            }
+            header .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            header nav ul li {
+                margin: 0 10px;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            .project-wide-card {
+                flex-direction: column;
+            }
+            .project-img-placeholder {
+                height: 200px;
+            }
+        }
+        .project-group {
+            border: 1px solid #E0E7FF;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .project-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05), 0 15px 30px rgba(0,0,0,0.08);
+        }
+        .project-group .project-wide-card {
+            box-shadow: none;
+            margin-bottom: 0;
+            padding: 25px;
+            gap: 25px;
+            border-radius: 0;
+            border-bottom: 1px dashed #E0E7FF;
+        }
+        .project-group .project-wide-card:last-child {
+            border-bottom: none;
+        }
+        .project-details h5 {
+            font-weight: 700;
+            color: var(--point-color);
+            border-bottom: 1px solid #E0E7FF;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .project-title {
+            border-left: 5px solid var(--point-color);
+            padding-left: 10px;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            li {
+                page-break-inside: avoid;
+            }
+            #about, .project-group {
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            .page-break-before-me {
+                page-break-before: always;
+            }
+            header, footer, #projects > .section-title, #side-projects > .section-title {
+                display: none;
+            }
+            .main-wrapper {
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            body {
+                font-size: 11pt;
+                color: black;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: black !important;
+            }
+            .project-group {
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .tech-stack .tech {
+                background-color: #f0f0f0 !important;
+                color: black !important;
+                border: 1px solid #ccc;
+            }
+            img {
+                max-width: 80% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+    <!-- test comment -->
+</head>
+<body>
+    <div class="main-wrapper">
+
+    <header>
+        <div class="nav-container">
+            <h1>채민기 | 포트폴리오</h1>
+            <nav>
+                <ul>
+                    <li><a href="#about">About Me</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#side-projects">Side Projects</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="about">
+                 <h2 class="section-title">About Me</h2>
+                <div class="about-row" id="about-top-row">
+                    <!-- Column 1: Image & Contact -->
+                    <div class="about-column">
+                        <img src="./이미지/채민기_증명사진.jpg" alt="채민기 증명사진" class="profile-image" style="width: 70%; height: auto; border-radius: 8px; margin-bottom: 20px;">
+                                                    <div class="contact-info">
+                                                        <p>안녕하세요, 장비의 기능 구현과 성능 개선을 수행하는 개발자 채민기입니다.</p>
+                                                        <h3>Contact</h3>                            <p><strong>Email:</strong> asminkee@gmail.com</p>
+                            <p><strong>Phone:</strong> 010-9890-5254</p>
+                            <p><strong>Location:</strong> 경기도 고양시 덕양구</p>
+                            <p><strong>Github:</strong> </p>
+                        </div>
+                    </div>
+                    <!-- Column 2: Experiences -->
+                    <div class="about-column">
+                        <h3>Experiences</h3>
+                        <div class="experience-entry">
+                            <div class="item-header">
+                                <div>
+                                     <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
+                                     <span class="item-period">2025.03 - 2025.06 (인턴)</span>
+                                </div>
+                            </div>
+                            <div class="item-body">
+                                <ul>
+                                    <li>스캐너 검사장치 App 개발</li>
+                                    <li>AI 연조직 제거 라벨링</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="experience-entry">
+                            <div class="item-header">
+                                <div>
+                                    <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
+                                    <span class="item-period">2025.06 - 2025.12 (단기 계약직)</span>
+                                </div>
+                            </div>
+                            <div class="item-body">
+                                <ul>
+                                    <li>스캐너 단위 기능 검사 App 개발</li>
+                                    <li>스캐너 정보 관리 App 개발</li>
+                                    <li>스캐너 연조직 제거 기능 AI 개발</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-row" id="about-bottom-row">
+                    <!-- Column 3: Education -->
+                    <div class="about-column">
+                        <h3>Education</h3>
+                        <div class="item">
+                            <p class="education-entry"><span class="school-details"><strong>건국대학교 / 전기전자공학부</strong> (졸업)</span><span class="education-duration">(2023.03 ~ 2025.08)</span></p>
+                            <p class="education-entry"><span class="school-details"><strong>순천향대학교 / 전자공학과</strong> (중퇴)</span><span class="education-duration">(2018.03 ~ 2020.02)</span></p>
+                            <p class="education-entry"><span class="school-details"><strong>저현고등학교</strong></span><span class="education-duration">(2015.09 ~ 2018.02)</span></p>
+                            <p class="education-entry"><span class="school-details"><strong>Fond Du lac High school</strong></span><span class="education-duration">(2014.09 ~ 2015.06)</span></p>
+                        </div>
+                    </div>
+                    <!-- Column 4: Skills -->
+                    <div class="about-column">
+                        <h3>Skills</h3>
+                         <div class="skills-grid">
+                            <div class="skill-category">
+                                <h4>Language</h4>
+                                <ul>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-cplusplus-plain colored"></i>
+                                                <span class="skill-name">C++</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-c-plain colored"></i>
+                                                <span class="skill-name">C</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-python-plain colored"></i>
+                                                <span class="skill-name">Python</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="skill-category">
+                                <h4>System & Frameworks</h4>
+                                <ul>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-linux-plain colored"></i>
+                                                <span class="skill-name">Linux</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-qt-original colored"></i>
+                                                <span class="skill-name">Qt</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-opencv-plain colored"></i>
+                                                <span class="skill-name">OpenCV</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="skill-category">
+                                <h4>Collaboration & Tools</h4>
+                                <ul>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-git-plain colored"></i>
+                                                <span class="skill-name">Git</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-jira-plain colored"></i>
+                                                <span class="skill-name">Jira</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-confluence-plain colored"></i>
+                                                <span class="skill-name">Confluence</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-slack-plain colored"></i>
+                                                <span class="skill-name">Slack</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="skill-item-row">
+                                            <div class="skill-info">
+                                                <i class="devicon-markdown-original"></i>
+                                                <span class="skill-name">Markdown</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">01. 구강 3D 스캐너 검사장비 개발</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/오스템임플란트/singleDepth_UI.png" alt="구강 3D 스캐너 검사장비" class="project-image">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">App UI</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>구강 3D 스캐너의 single Depth 알고리즘을 검사하는 검사장치 제어 GUI 애플리케이션 개발.</li>
+                                </ul>
+                                <h5>수행 업무</h5>
+                                <ul>
+                                    <li>QT 기반 GUI 앱 개발</li>
+                                    <li>영상 출력 : 실시간 카메라 영상 출력</li>
+                                    <li>카메라 제어 : Auto Exposure, Saturation 모드 제어 옵션 구현</li>
+                                    <li>영상 딜레이 개선 : 모터 제어 멀티 쓰레딩으로 UI 딜레이 개선</li>
+                                    <li>성능 최적화 : 구조 리팩토링, 영상 송출 신호 빈도 최적화</li>
+                                    <li>문서 작업 : Deprecated 기능 문서화</li>
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="margin-top: 20px;">
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>촬영 옵션 제어기능</li>
+                                    <li>모터의 Yaw 360도 회전, pitch 90도 회전제어 설정</li>
+                                    <li>촬영중인 이미지 UI송출</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>UI 응답 속도 및 딜레이 제거로 사용자 편의성 향상</li>
+                                    <li>프로세스 메모리 사용량 13% 개선</li>
+                                    <li>사용자 피드백 기반 UI 개선으로 UX 향상</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                    <span class="tech">C++</span><span class="tech">QT</span><span class="tech">OpenCv</span><span class="tech">멀티 쓰레드</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">02. 스캐너 단위 기능 검사 SW 개발</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/오스템임플란트/UnitScan_CaptureDialog.png" alt="스캐너 단위 기능 검사 SW" class="project-image">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">캡처 다이얼록 UI</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>스캐너의 기능을 단위 기능으로 테스트하는 유틸리티 SW의 개발.</li>
+                                </ul>
+                                <h5>수행 업무</h5>
+                                <ul>
+                                    <li>QT기반 GUI 앱 개발</li>
+                                    <li>유지보수 : FW 업데이트 및 요구사항에 맞춰 기능 추가 구현</li>
+                                    <li>장비 의존성 개선 : 3D Reconstruction 기능의 장비 의존성 제거</li>
+                                    <li>문서 작업 : 툴 사용법 문서화, trouble shooting 내용 문서화</li>
+                                    <li>카메라 제어 기능 : 시퀀스 커스텀 모드, RGB 노출 실시간 제어기능 구현</li>
+                                    <li>모니터링 기능 : 자동 노출시 내부 파라미터 모니터링 기능 구현</li>
+                                    <li>AI 연동 : 연조직 제거 AI 연동 및 on/off기능 구현</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/오스템임플란트/UnitScan_Ui1.png" alt="기능 별 UI구성" class="project-image">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">장비 제어 UI</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>촬영 옵션제어 : 촬영 시퀀스 및 LED제어 기능</li>
+                                    <li>촬영중인 이미지 UI 송출</li>
+                                    <li>패턴 및 시퀀스 파일 업/다운로드 기능</li>
+                                    <li>촬영시 변화하는 파라미터 모니터링</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>비전공자 팀원의 기능 검증 지원</li>
+                                    <li>장비 성능 Trade off 효율성 개선</li>
+                                    <li>장비 Trouble shooting 효율성 개선</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">C++</span><span class="tech">QT</span><span class="tech">OpenCv</span><span class="tech">멀티 쓰레드</span><span class="tech">WSL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">03. 스캐너 정보관리 App 개발</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/오스템임플란트/ScannerInfoUI.png" alt="스캐너 정보관리 App" class="project-image" style="width: 100%;">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">스캐너 정보탭</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>스캐너 생산 단계에서 장비 및 파츠 정보를 관리하는 SW 개발</li>
+                                </ul>
+                                <h5>수행 업무</h5>
+                                <ul>
+                                    <li>QT기반 GUI 앱 개발</li>
+                                    <li>편의성 개선 : App에서 와이파이 연결, 재부팅 후 자동 재연결 기능 구현</li>
+                                    <li>모니터링 기능 : 스캐너 정보 확인 기능 구현</li>
+                                <li>문서 작업 : 팀 Confluence에 사용 매뉴얼 문서화</li>
+                                    <li>정보 관리 기능 : 스캐너 및 파츠 정보 수정 기능 구현</li>
+                                    <li>안정성 개선 : 프로그램 실행 시 기존 장비 연결 해제</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; display: flex; flex-direction: column; gap: 10px;">
+                                <div style="text-align: center;">
+                                    <img src="./이미지/오스템임플란트/ScannerPartsInfoUI.png" alt="파츠 관리 탭" class="project-image">
+                                    <p style="font-size: 0.9em; color: #555; margin-top: 5px;">파츠 관리 탭</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 50%; margin: 0 auto;">
+                                        <img src="./이미지/오스템임플란트/scannerPartsInfoUI2.png" alt="파츠별 정보입력 UI" style="width: 100%; height: auto; object-fit: contain; transition: transform 0.3s ease;">
+                                    </div>
+                                    <p style="font-size: 0.9em; color: #555; margin-top: 5px;">파츠별 정보입력 UI</p>
+                                </div>
+                           </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>장비의 PW변경시 자동 재부팅, 재연결로 테스트 지원</li>
+                                    <li>APP에서 wifi연결 지원</li>
+                                    <li>파츠별 정보 관리 기능 지원</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>타 APP에 기능 일부 이식</li>
+                                    <li>구동 시 기존 연결 초기화를 통한 타 장비 오인 제어 방지 및 안정성 확보</li>
+                                    <li>재부팅 후 자동 재연결 기능으로 운영 효율 개선</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">C++</span><span class="tech">QT</span><span class="tech">WSL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">04. 연조직 제거 기능 개선 프로젝트</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <div style="text-align: center; margin-bottom: 10px;">
+                                    <p><strong>Before</strong></p>
+                                    <img src="./이미지/오스템임플란트/연조직 제거필터 OFf.png" alt="연조직 제거 필터 OFF" class="project-image" style="max-width: 100%; height: auto; margin: 0 auto; display: block;">
+                                </div>
+                                <div style="text-align: center;">
+                                    <p><strong>After</strong></p>
+                                    <img src="./이미지/오스템임플란트/연조직 제거 필터 on.png" alt="연조직 제거 필터 ON" class="project-image" style="max-width: 100%; height: auto; margin: 0 auto; display: block;">
+                                </div>
+                            </div>
+                            <div class="project-details" style="padding: 0; flex:2;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>연조직 제거 성능 개선 및 하드 티슈 보존력 개선, 풀 아치 스캔 구현</li>
+                                </ul>
+                                <h5>수행 업무</h5>
+                                <ul>
+                                    <li>AI 학습 : 학습 코드 수정 및 파라미터 최적화</li>
+                                    <li>데이터셋 관리 : 데이터셋 정리 GUI App 제작, 라벨링 검수</li>
+                                    <li>업무 효율성 개선 : 라벨링 확인용 GUI App 제작</li>
+                                    <li>문서 작업 : 데이터셋 검증 방식, CVAT 툴 메뉴얼 문서화</li>
+                                    <li>성능 테스트 : 장비 연동 테스트 및 속도, 정확도 개선</li>
+                                    <li>풀아치 스캔 : 분할 모델과 환경 한계로 인해 분류 모델 연동 및 요구 기능 개발</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; display: flex; flex-direction: column; gap: 10px;">
+                                <div style="text-align: center;">
+                                    <img src="./이미지/오스템임플란트/CVAT_DataManager.png" alt="데이터 관리용 툴 UI" class="project-image">
+                                    <p style="font-size: 0.9em; color: #555; margin-top: 5px;">데이터 관리용 툴</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <img src="./이미지/오스템임플란트/AnnotationViewer.png" alt="로컬용 라벨 검수용 툴 UI" class="project-image">
+                                    <p style="font-size: 0.9em; color: #555; margin-top: 5px;">로컬용 라벨 검수용 툴</p>
+                                </div>
+                            </div>
+                            <div class="project-details" style="padding: 0; flex: 2;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>데이터 관리용 툴 UI</li>
+                                    <li>로컬용 라벨 검수용 툴 UI</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>모델 DICE score 7.8% 개선</li>
+                                    <li>파라미터 최적화로 학습 시간 50% 개선, 연조직 제거 성능 11% 개선</li>
+                                    <li>라벨링 프로세스 표준화로 협업 효율 및 데이터 무결성 향상</li>
+                                    <li>검증 프로세스 지원 툴 개발로 기존 프로세스 5단계 -> 3단계 축소</li>
+                                    <li>기존 분할 모델의 한계 개선 및 풀아치 스캔 지원</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">C++</span><span class="tech">QT</span><span class="tech">OpenCv</span><span class="tech">cvat</span><span class="tech">Python</span><span class="tech">Pytorch</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="side-projects">
+                <h2 class="section-title">Side Projects</h2>
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">01. 드론 탑재용 화재 감지/분석 시스템</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img src="./이미지/사이드 프로젝트/gr.png" alt="드론 탑재용 화재 감지/분석 시스템" class="project-image" style="width: 50%;">
+                        </div>
+                        <div class="project-details" style="padding: 0;">
+                            <h5>프로젝트 목적</h5>
+                            <ul>
+                                <li>AI와 카메라만을 활용한 드론 탑재용 화재 감지/분석 시스템</li>
+                            </ul>
+                            <h5>수행업무</h5>
+                            <ul style="font-size: 95%;">
+                               <li>YOLOv9 기반 실시간 화재 감지</li>
+                               <li>Mono Depth를 활용한 거리 가중치 적용</li>
+                               <li>pruning 및 파라미터별 60건의 테스트 케이스 분석 및 최적 모델 도출</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/사이드 프로젝트/flow.png" alt="시스템 흐름도" class="project-image" style="width: 80%;">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">시스템 흐름도</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>Jetson 보드에서 단일 카메라만으로 실시간 화재감지 + 위험도 분석</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>추론 시간 11% 단축</li>
+                                    <li>온보드 실시간 위험도 분석구현, 스테이션 및 센서 비용 개선</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">YOLOv9</span><span class="tech">TensorRT</span><span class="tech">Pruning</span><span class="tech">Mono Depth</span><span class="tech">Python</span><span class="tech">jetson</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">02. 스마트 캠</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <img src="./이미지/사이드 프로젝트/임베디드시스템 아키텍쳐.png" alt="스마트 캠 시스템 아키텍쳐" class="project-image">
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">시스템 아키텍쳐</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>사용자 트래킹 + 제스처 인식 기반의 HW제어 시스템</li>
+                                </ul>
+                                <h5>수행업무</h5>
+                                <ul>
+                                   <li>라즈베리파이에서 객체 인식 AI와 디바이스 드라이버 제작</li>
+                                   <li>Python(AI), C(Main)간 PIPE통신 적용</li>
+                                   <li>HW 기반 기능 검증</li>
+                                   <li>confidence score도입으로 불안정성 개선</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="margin-top: 20px;">
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>AI 기반 사용자 트래킹</li>
+                                    <li>AI 기반 사용자 제스쳐 인식을 통한 하드웨어 제어</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>모듈화 구조로 유지보수 용이성 확보</li>
+                                    <li>실시간 AI 기반 제어 시스템 구현</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">image classification</span><span class="tech">C</span><span class="tech">python</span><span class="tech">Rpi4</span><span class="tech">Linux Driver</span><span class="tech">IPC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-group">
+                    <div class="project-wide-card" style="padding: 25px; display: block;">
+                        <h3 class="project-title">03. AI를 활용한 케이스 디자인 APP</h3>
+                        <h4 class="project-subtitle">프로젝트 개요</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <div style="width: 100%; margin: 0 auto;">
+                                    <img src="./이미지/사이드 프로젝트/7.jpg" alt="AI를 활용한 케이스 디자인 APP" style="width: 100%; height: auto; object-fit: contain; transition: transform 0.3s ease;">
+                                </div>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>프로젝트 목적</h5>
+                                <ul>
+                                    <li>이미지 스타일 변환 + 케이스 Edge추출 합성 툴</li>
+                                </ul>
+                                <h5>수행업무</h5>
+                                <ul>
+                                   <li>CycleGAN을 통한 이미지 변환 모델 학습</li>
+                                   <li>Edge 필터를 활용한 케이스 이미지 추출</li>
+                                   <li>Qt 기반 데스크톱 애플리케이션 제작</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
+                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
+                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
+                            <div style="flex:1; text-align: center;">
+                                <div style="width: 40%; margin: 0 auto;">
+                                    <img src="./이미지/사이드 프로젝트/edge2.png" alt="결과물 예시" style="width: 100%; height: auto; object-fit: contain; transition: transform 0.3s ease;">
+                                </div>
+                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">결과물 예시</p>
+                            </div>
+                            <div class="project-details" style="padding: 0;">
+                                <h5>상세 기능 소개</h5>
+                                <ul>
+                                    <li>CycleGan을 통한 이미지 스타일 변환 제공</li>
+                                    <li>Edge 필터를 통한 이미지 후처리</li>
+                                </ul>
+                                <h5>성과</h5>
+                                <ul>
+                                    <li>엣지 필터 활용으로 선택의 다양성 제공</li>
+                                    <li>QT UI를 통한 UX 개선</li>
+                                </ul>
+                                <h5>사용 기술</h5>
+                                <div class="tech-stack">
+                                   <span class="tech">PyTorch</span><span class="tech">Qt</span><span class="tech">Python</span><span class="tech">jetson</span><span class="tech">OpenCV</span><span class="tech">conda</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 채민기. All Rights Reserved.</p>
+        <p>본 페이지는 Gemini를 통해 자동 생성되었습니다.</p>
+    </footer>
+
+    </div>
+</body>
+</html>

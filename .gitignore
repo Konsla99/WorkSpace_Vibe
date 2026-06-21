@@ -16,10 +16,13 @@ Thumbs.db
 
 # Monorepo: large binaries
 *.zip
-ppt/
 ppt (3)/
 
 # careerDiscriptionApp rules
 careerDiscriptionApp/node_modules/
 careerDiscriptionApp/dist/
 
+test1/
+*.png
+*.mp4
+*.jpg
