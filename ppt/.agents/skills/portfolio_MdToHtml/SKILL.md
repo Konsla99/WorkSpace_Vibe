@@ -8,13 +8,24 @@ description: Syncs and reflects updates from portfolio_input.md into portfolio.h
 이 스킬은 `portfolio_input.md` 파일의 변경 사항을 웹용 포트폴리오(`portfolio.html`) 및 인쇄용 포트폴리오(`portfolio_PDF.html`)에 정밀하게 수동 동기화하는 가이드를 제공합니다.
 
 ## 1. 실행 흐름
-1. **마크다운 읽기**: [portfolio_input.md](file:///D:/workspace_Gemini/ppt/portfolio_input.md) 파일의 내용을 읽고 최신 정보를 파악합니다.
-2. **변경사항 식별**: 기존 HTML과 비교하여 인적사항, 경력, 학력, 기술 스택, 프로젝트 및 사이드 프로젝트 등 변경된 요소를 매핑합니다.
-3. **HTML 파일 로드**:
+이 스킬은 기본 버전 및 AI 특화 버전에 모두 적용됩니다.
+
+### 기본 버전
+1. **마크다운 읽기**: [portfolio_input.md](file:///D:/workspace_Gemini/ppt/portfolio_input.md) 파일의 내용을 읽어 최신 정보를 파악합니다.
+2. **HTML 파일 로드**:
    - 웹용: [portfolio.html](file:///D:/workspace_Gemini/ppt/portfolio.html) (`.main-wrapper` 배경색: `var(--wrapper-bg)`)
    - 인쇄용: [portfolio_PDF.html](file:///D:/workspace_Gemini/ppt/portfolio_PDF.html) (`.main-wrapper` 배경색: `#FFFFFF`)
-4. **수동 편집 및 반영**: 각 파일의 HTML 레이아웃 구조와 스타일을 손상시키지 않고 본래 양식에 맞춰 변경 사항을 적용합니다.
-5. **양 파일 동일성 검증**: 두 파일의 정보 동기화 상태를 최종 체크합니다.
+3. **수동 편집 및 반영**: 각 파일의 HTML 레이아웃 구조와 스타일을 손상시키지 않고 본래 양식에 맞춰 변경 사항을 적용합니다.
+4. **동일성 검증**: 두 파일(`portfolio.html`, `portfolio_PDF.html`)의 정보 동기화 상태를 최종 체크합니다.
+
+### AI 특화 버전
+1. **마크다운 읽기**: [portfolio_AI_input.md](file:///D:/workspace_Gemini/ppt/portfolio_AI_input.md) 파일의 내용을 읽어 최신 정보를 파악합니다.
+2. **HTML 파일 로드**:
+   - 웹용: [portfolioAI.html](file:///D:/workspace_Gemini/ppt/portfolioAI.html) (`.main-wrapper` 배경색: `var(--wrapper-bg)`)
+   - 인쇄용: [portfolio_AI_PDF.html](file:///D:/workspace_Gemini/ppt/portfolio_AI_PDF.html) (`.main-wrapper` 배경색: `#FFFFFF`)
+3. **수동 편집 및 반영**: 동일하게 HTML 레이아웃에 맞춰 AI 활용 정보(`## 7. AI 활용 및 워크플로우 (AI Experience)`)를 포함해 변경 사항을 반영합니다.
+4. **동일성 검증**: 두 파일(`portfolioAI.html`, `portfolio_AI_PDF.html`)의 정보 동기화 상태를 최종 체크합니다.
+
 
 ---
 
