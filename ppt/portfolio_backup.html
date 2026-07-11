@@ -173,6 +173,35 @@
             padding-bottom: 0;
             border-bottom: none;
         }
+        .experiences-row {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .experiences-row .experience-entry {
+            flex: 1;
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .experiences-row .experience-entry:last-child {
+            border-left: 1px dashed var(--border-color);
+            padding-left: 20px;
+        }
+        @media (max-width: 768px) {
+            .experiences-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .experiences-row .experience-entry:last-child {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px dashed var(--border-color);
+                padding-top: 20px;
+            }
+        }
         
         /* Experiences & Projects Section */
         .item {
@@ -470,43 +499,169 @@
         }
 
         @media print {
+            html, body, .main-wrapper, .container {
+                overflow: visible !important;
+                height: auto !important;
+            }
             li {
                 page-break-inside: avoid;
             }
-            #about, .project-group {
-                page-break-after: always;
-                page-break-inside: avoid;
-            }
-            .page-break-before-me {
-                page-break-before: always;
-            }
-            header, footer, #projects > .section-title, #side-projects > .section-title {
-                display: none;
-            }
             .main-wrapper {
                 margin: 0 !important;
-                padding: 0 !important;
+                padding: 15px !important;
                 box-shadow: none !important;
                 border: none !important;
+                max-width: 100% !important;
             }
-            body {
-                font-size: 11pt;
-                color: black;
+            section {
+                padding: 15px 0 !important;
+                border-bottom: 1px solid var(--border-color) !important;
             }
-            h1, h2, h3, h4, h5, h6 {
-                color: black !important;
+            .section-title {
+                display: block !important;
+                visibility: visible !important;
+                font-size: 1.8em !important;
+                margin-top: 10px !important;
+                margin-bottom: 20px !important;
+                border-bottom: 2px solid var(--point-color);
+                padding-bottom: 5px;
+                color: var(--point-color) !important;
+                text-align: center;
+                page-break-inside: avoid;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+            #about {
+                page-break-inside: auto !important;
+                page-break-after: auto !important;
+            }
+            #about-top-row {
+                page-break-inside: avoid !important;
+            }
+            #about-bottom-row {
+                page-break-before: always !important;
+                break-before: always !important;
+                page-break-inside: avoid !important;
+            }
+            #about-top-row, #about-bottom-row {
+                gap: 15px !important;
+                margin-bottom: 15px !important;
+            }
+            .about-column {
+                padding: 10px !important;
+            }
+            .about-column h3 {
+                font-size: 1.3em !important;
+                margin-bottom: 10px !important;
+            }
+            .about-column h4 {
+                font-size: 0.95em !important;
+                margin-bottom: 8px !important;
+            }
+            .profile-image {
+                width: 50% !important;
+                margin-bottom: 10px !important;
+            }
+            .contact-info p {
+                margin: 2px 0 !important;
+                font-size: 0.85em !important;
+            }
+            .experience-entry {
+                margin-bottom: 10px !important;
+                padding-bottom: 10px !important;
+            }
+            .experiences-row {
+                gap: 10px !important;
+                padding-bottom: 10px !important;
+                margin-bottom: 10px !important;
+            }
+            .experiences-row .experience-entry:last-child {
+                padding-left: 10px !important;
+            }
+            .item {
+                padding: 10px !important;
+                margin-bottom: 10px !important;
+            }
+            .education-entry {
+                font-size: 0.8em !important;
+                margin-bottom: 4px !important;
+            }
+            .skills-grid {
+                gap: 10px !important;
+            }
+            .skill-category {
+                margin-bottom: 5px !important;
+            }
+            .skill-category h4 {
+                font-size: 0.9em !important;
+                margin-bottom: 5px !important;
+            }
+            .skill-category li {
+                margin-bottom: 4px !important;
+            }
+            .skill-category i {
+                font-size: 1.3em !important;
+                margin-right: 8px !important;
+            }
+            .skill-name {
+                font-size: 0.8em !important;
+            }
+            header, footer {
+                display: none !important;
+            }
+            #projects > .section-title, #side-projects > .section-title {
+                page-break-before: always !important;
+                break-before: always !important;
             }
             .project-group {
                 border: none !important;
                 box-shadow: none !important;
+                page-break-inside: auto !important;
+                margin-bottom: 20px !important;
+                padding: 5px !important;
+            }
+            .project-group + .project-group {
+                page-break-before: always !important;
+                break-before: always !important;
+            }
+            .project-group .project-wide-card {
+                padding: 15px !important;
+                gap: 15px !important;
+                page-break-inside: avoid !important;
+            }
+            .page-break-before-me {
+                page-break-before: always !important;
+                break-before: always !important;
+            }
+            .project-title {
+                font-size: 1.3em !important;
+                margin-bottom: 10px !important;
+            }
+            .project-subtitle {
+                margin-top: 10px !important;
+                margin-bottom: 10px !important;
+                font-size: 0.9em !important;
+                padding: 4px 8px !important;
+            }
+            .project-wide-card h5 {
+                margin-top: 10px !important;
+            }
+            body {
+                font-size: 10pt !important;
+                color: black !important;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: black !important;
             }
             .tech-stack .tech {
                 background-color: #f0f0f0 !important;
                 color: black !important;
-                border: 1px solid #ccc;
+                border: 1px solid #ccc !important;
+                font-size: 0.75em !important;
+                padding: 2px 6px !important;
             }
             img {
-                max-width: 80% !important;
+                max-width: 70% !important;
                 height: auto !important;
             }
         }
@@ -541,39 +696,56 @@
                                                         <p>안녕하세요, 장비의 기능 구현과 성능 개선을 수행하는 개발자 채민기입니다.</p>
                                                         <h3>Contact</h3>                            <p><strong>Email:</strong> asminkee@gmail.com</p>
                             <p><strong>Phone:</strong> 010-9890-5254</p>
-                            <p><strong>Location:</strong> 경기도 고양시 덕양구</p>
+                            <p><strong>Location:</strong> 경기도 성남시 분당구</p>
                             <p><strong>Github:</strong> </p>
                         </div>
                     </div>
                     <!-- Column 2: Experiences -->
                     <div class="about-column">
                         <h3>Experiences</h3>
-                        <div class="experience-entry">
-                            <div class="item-header">
-                                <div>
-                                     <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
-                                     <span class="item-period">2025.03 - 2025.06 (인턴)</span>
+                        <div class="experiences-row">
+                            <div class="experience-entry">
+                                <div class="item-header">
+                                    <div>
+                                         <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
+                                         <span class="item-period">2025.03 - 2025.06 (인턴)</span>
+                                    </div>
+                                </div>
+                                <div class="item-body">
+                                    <ul>
+                                        <li>스캐너 검사장치 App 개발</li>
+                                        <li>AI 연조직 제거 라벨링</li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="item-body">
-                                <ul>
-                                    <li>스캐너 검사장치 App 개발</li>
-                                    <li>AI 연조직 제거 라벨링</li>
-                                </ul>
+                            <div class="experience-entry">
+                                <div class="item-header">
+                                    <div>
+                                        <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
+                                        <span class="item-period">2025.06 - 2025.12 (단기 계약직)</span>
+                                    </div>
+                                </div>
+                                <div class="item-body">
+                                    <ul>
+                                        <li>스캐너 단위 기능 검사 App 개발</li>
+                                        <li>스캐너 정보 관리 App 개발</li>
+                                        <li>스캐너 연조직 제거 기능 AI 개발</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="experience-entry">
                             <div class="item-header">
                                 <div>
-                                    <h4 class="item-title">오스템 임플란트 <span class="department-inline">- 스캐너 연구소</span></h4>
-                                    <span class="item-period">2025.06 - 2025.12 (단기 계약직)</span>
+                                    <h4 class="item-title">피에스케이 홀딩스 <span class="department-inline">- SW G</span></h4>
+                                    <span class="item-period">2026.01 ~ (연구원)</span>
                                 </div>
                             </div>
                             <div class="item-body">
                                 <ul>
-                                    <li>스캐너 단위 기능 검사 App 개발</li>
-                                    <li>스캐너 정보 관리 App 개발</li>
-                                    <li>스캐너 연조직 제거 기능 AI 개발</li>
+                                    <li>Reflow 장비 기능 개발</li>
+                                    <li>Reflow 장비 성능 개선</li>
+                                    <li>AI 워크플로우 도입</li>
                                 </ul>
                             </div>
                         </div>
@@ -704,7 +876,7 @@
             </section>
 
             <section id="projects">
-                <h2 class="section-title">Projects</h2>
+                <h2 class="section-title">회사 프로젝트 (Projects)</h2>
                 <div class="project-group">
                     <div class="project-wide-card" style="padding: 25px; display: block;">
                         <h3 class="project-title">01. 구강 3D 스캐너 검사장비 개발</h3>
@@ -950,7 +1122,7 @@
             </section>
             
             <section id="side-projects">
-                <h2 class="section-title">Side Projects</h2>
+                <h2 class="section-title">사이드 프로젝트 (Side Projects)</h2>
                 <div class="project-group">
                     <div class="project-wide-card" style="padding: 25px; display: block;">
                         <h3 class="project-title">01. 드론 탑재용 화재 감지/분석 시스템</h3>
