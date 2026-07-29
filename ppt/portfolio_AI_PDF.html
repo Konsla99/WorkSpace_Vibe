@@ -757,7 +757,8 @@
                             <div class="item-body">
                                 <ul>
                                     <li>Reflow 장비 SW 양산 개발</li>
-                                    <li>AI 워크플로우 도입</li>
+                                    <li>AI 워크플로우 표준화 및 업무 자동화 구축</li>
+                                    <li>장비 정보 기록 플래폼 개발 및 AI 하네스 구축</li>
                                 </ul>
                             </div>
                         </div>
@@ -1325,18 +1326,19 @@
                 <h2 class="section-title">AI 활용 및 워크플로우 (AI Experience)</h2>
                 <div class="project-group">
                     <div class="project-wide-card" style="padding: 25px; display: block;">
-                        <h3 class="project-title">01. AI 기반 개발 생산성 혁신 (AI-Assisted S/W Engineering)</h3>
+                        <h3 class="project-title">01. LLM Harness 기반 양산 개발 워크플로우 자동화</h3>
                         <h4 class="project-subtitle">프로젝트 개요</h4>
                         <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
                             <div class="project-details" style="padding: 0;">
                                 <h5>프로젝트 목적</h5>
                                 <ul>
-                                    <li>LLM API 및 에이전틱(Agentic) 워크플로우를 활용한 소프트웨어 개발 생산성 개선 및 규격 검증 자동화</li>
+                                    <li>반복적인 양산 개발 절차의 표준화 및 LLM 하네스(Harness) 연동을 통한 개발 생산성 향상 및 양산 적용 자동화</li>
                                 </ul>
                                 <h5>수행 업무</h5>
                                 <ul>
-                                    <li>LLM 기반 다중 에이전트 시스템을 통한 소스 코드 디버깅 및 설계 가이드 라인 구축</li>
-                                    <li>AI 가이드 기반 코드 분석 툴을 커스터마이징하여 프로젝트 온보딩 자동화 구축</li>
+                                    <li>반복적인 양산 업무 절차를 표준화하여 <code>Skill.md</code>, 실행 스크립트, 레퍼런스 모듈 구축</li>
+                                    <li>AI 에이전트가 정해진 규칙 및 컨텍스트 가이드에 따라 작업을 수행할 수 있도록 툴 연동 인터페이스 및 하네스 설계</li>
+                                    <li>주요 양산 동작 스크립트 자동화를 통한 프로세스 최적화 및 휴먼 에러 방지</li>
                                 </ul>
                             </div>
                         </div>
@@ -1347,12 +1349,12 @@
                             <div class="project-details" style="padding: 0;">
                                 <h5>성과</h5>
                                 <ul>
-                                    <li>반복적인 상용문 코드 빌드 및 분석 과정의 딜레이 제거</li>
-                                    <li>설계 검토 단계 40% 시간 단축 및 AI 피드백을 통한 휴먼 에러 차단</li>
+                                    <li>양산 프로세스 자동화를 통해 양산 적용 작업 시간 70% 단축</li>
+                                    <li>컨텍스트 가이드 및 표준화 스크립트를 통한 절차상의 Human Error 차단</li>
                                 </ul>
                                 <h5>사용 기술</h5>
                                 <div class="tech-stack">
-                                    <span class="tech">LLM APIs</span><span class="tech">Agentic Workflows</span><span class="tech">Code Llama</span><span class="tech">Python</span><span class="tech">Prompt Engineering</span>
+                                    <span class="tech">CODEX</span><span class="tech">Agentic Workflows</span><span class="tech">Harness Engineering</span>
                                 </div>
                             </div>
                         </div>
@@ -1361,86 +1363,36 @@
 
                 <div class="project-group">
                     <div class="project-wide-card" style="padding: 25px; display: block;">
-                        <h3 class="project-title">02. AI 데이터셋 관리 및 라벨링 고도화 (AI Data Management)</h3>
+                        <h3 class="project-title">02. 장비 도메인 지식 연동 및 AI 에이전트 활용 워크플로우 구축</h3>
                         <h4 class="project-subtitle">프로젝트 개요</h4>
                         <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
-                            <div style="flex:1; text-align: center;">
-                                <img src="./이미지/오스템임플란트/CVAT_DataManager.png" alt="데이터 관리용 툴 UI" class="project-image">
-                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">데이터 관리용 툴</p>
-                            </div>
                             <div class="project-details" style="padding: 0;">
                                 <h5>프로젝트 목적</h5>
                                 <ul>
-                                    <li>3D 구강 데이터 및 이미지 어노테이션의 품질 제어와 관리 공정 단축</li>
+                                    <li>SW 개발 단계에서 HW 파츠별 이슈 파싱 및 코드 리뷰를 자동화하고, 타 부서 간 HW 이력 공유 및 AI 컨텍스트 활용을 위한 통합 정보 관리 시스템 구축</li>
                                 </ul>
                                 <h5>수행 업무</h5>
                                 <ul>
-                                    <li>CVAT 오픈소스 라벨링 인프라 셋업 및 데이터 검증 GUI 뷰어 툴 개발</li>
-                                    <li>원본 데이터셋 밸런싱 알고리즘을 통한 AI 트레이닝 데이터 편향 제거</li>
+                                    <li><strong>HW 이력 관리 UI 플랫폼 개발 및 JSON Export 구현</strong>: 타 부서에서 장비별 HW 파츠 이력을 용이하게 확인·추가할 수 있는 웹/UI 플랫폼을 구축하고, 입력된 데이터를 연동용 JSON 규격으로 파싱 및 Export하는 기능 구현</li>
+                                    <li><strong>SW 개발 및 코드 리뷰 자동화 스킬 구축</strong>: Export된 JSON 데이터를 AI 컨텍스트로 활용하여 SW 개발 시 HW 파츠별 이슈를 자동 파싱하고 코드 리뷰를 수행하는 <code>Skill.md</code> 및 시스템 프롬프트(System Prompt) 설계</li>
+                                    <li><strong>에이전트 제어 하네스(Harness) 구현</strong>: AI가 정해진 HW 규격 및 레퍼런스 지침을 엄격히 준수하여 판단하도록 행동 규칙과 자율성 범위를 제어하는 워크플로우 구축</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
                         <h4 class="project-subtitle">추가 내용 및 결과</h4>
-                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
-                            <div style="flex:1; text-align: center;">
-                                <img src="./이미지/오스템임플란트/AnnotationViewer.png" alt="로컬용 라벨 검수용 툴 UI" class="project-image">
-                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">로컬용 라벨 검수용 툴</p>
-                            </div>
+                        <div class="card-content" style="margin-top: 20px;">
                             <div class="project-details" style="padding: 0;">
                                 <h5>성과</h5>
                                 <ul>
-                                    <li>데이터 무결성 100% 확보 및 AI 모델 DICE Score 7.8% 향상에 기여</li>
-                                    <li>기존 5단계 데이터 라벨링 검증 과정을 3단계로 단축하여 파이프라인 가속화</li>
+                                    <li>타 부서-개발팀 간 HW 파츠 이력 공유 절차 일원화 및 이력 공유 확인 효율성 개선</li>
+                                    <li>HW 이슈 기반 코드 리뷰 자동화를 통해 파츠 관련 SW 불량 및 휴먼 에러 방지</li>
+                                    <li>표준화된 스킬 규격 적용으로 장비 데이터 참조 시 AI 환각(Hallucination) 현상 차단</li>
                                 </ul>
                                 <h5>사용 기술</h5>
                                 <div class="tech-stack">
-                                    <span class="tech">CVAT</span><span class="tech">Python</span><span class="tech">Qt</span><span class="tech">OpenCV</span><span class="tech">Data Balancing</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-group">
-                    <div class="project-wide-card" style="padding: 25px; display: block;">
-                        <h3 class="project-title">03. 엣지 디바이스 AI 최적화 및 경량화 (Edge AI Optimization)</h3>
-                        <h4 class="project-subtitle">프로젝트 개요</h4>
-                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
-                            <div style="flex:1; text-align: center;">
-                                <img src="./이미지/사이드 프로젝트/임베디드시스템 아키텍쳐.png" alt="스마트 캠 시스템 아키텍쳐" class="project-image">
-                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">시스템 아키텍쳐</p>
-                            </div>
-                            <div class="project-details" style="padding: 0;">
-                                <h5>프로젝트 목적</h5>
-                                <ul>
-                                    <li>제한된 HW(Jetson, RPi) 리소스 환경 내 딥러닝 추론 속도 극대화</li>
-                                </ul>
-                                <h5>수행 업무</h5>
-                                <ul>
-                                    <li>YOLOv9 모델 구조 Pruning 및 가중치 최적화 모델 도출</li>
-                                    <li>PyTorch 학습 가중치의 TensorRT 가속 엔진 변환 및 엣지 장비 타겟 경량 배포</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-wide-card project-continuation page-break-before-me" style="padding: 25px; display: block;">
-                        <h4 class="project-subtitle">추가 내용 및 결과</h4>
-                        <div class="card-content" style="display: flex; gap: 25px; margin-top: 20px;">
-                            <div style="flex:1; text-align: center;">
-                                <img src="./이미지/사이드 프로젝트/flow.png" alt="시스템 흐름도" class="project-image" style="width: 80%;">
-                                <p style="font-size: 0.9em; color: #555; margin-top: 5px;">시스템 흐름도</p>
-                            </div>
-                            <div class="project-details" style="padding: 0;">
-                                <h5>성과</h5>
-                                <ul>
-                                    <li>임베디드 온보드 실시간 AI 추론 시간 11% 단축 성공</li>
-                                    <li>CPU-GPU 메모리 보틀넥 개선 및 비디오 전송 스트리밍 최적화</li>
-                                </ul>
-                                <h5>사용 기술</h5>
-                                <div class="tech-stack">
-                                    <span class="tech">PyTorch</span><span class="tech">YOLOv9</span><span class="tech">TensorRT</span><span class="tech">Model Pruning</span><span class="tech">Python</span><span class="tech">Jetson</span><span class="tech">Linux Driver</span>
+                                    <span class="tech">CODEX</span><span class="tech">Agentic Workflows</span><span class="tech">Harness Engineering</span>
                                 </div>
                             </div>
                         </div>
